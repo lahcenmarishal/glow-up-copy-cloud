@@ -12,7 +12,7 @@ type UsageType = "professionnel" | "residentiel" | null;
 
 const ContactSection = () => {
   const [usageType, setUsageType] = useState<UsageType>(null);
-  const [form, setForm] = useState({ full_name: "", phone: "", company: "", city: "", message: "" });
+  const [form, setForm] = useState({ full_name: "", phone: "", email: "", company: "", city: "", message: "" });
   const [sending, setSending] = useState(false);
 
   const { data: settings } = useQuery({
@@ -36,9 +36,9 @@ const ContactSection = () => {
     setSending(true);
     const message = `[CONTACT - Usage ${usageType}]\n${usageType === "professionnel" ? `Entreprise: ${form.company}\n` : ""}Ville: ${form.city}\n\nMessage:\n${form.message || "—"}`;
     const { error } = await supabase.from("contact_requests").insert({
-      full_name: form.full_name, email: `${form.phone}@no-email.local`, phone: form.phone, company: usageType === "professionnel" ? form.company : null, message,
+      full_name: form.full_name, email: form.email?.trim() ? form.email.trim() : `${form.phone}@no-email.local`, phone: form.phone, company: usageType === "professionnel" ? form.company : null, message,
     });
-    if (error) { toast.error("Erreur lors de l'envoi."); } else { toast.success("Demande envoyée avec succès !"); setForm({ full_name: "", phone: "", company: "", city: "", message: "" }); setUsageType(null); }
+    if (error) { toast.error("Erreur lors de l'envoi."); } else { toast.success("Demande envoyée avec succès !"); setForm({ full_name: "", phone: "", email: "", company: "", city: "", message: "" }); setUsageType(null); }
     setSending(false);
   };
 
@@ -125,10 +125,16 @@ const ContactSection = () => {
                   <input type="tel" placeholder="+212 6XX-XXXXXX" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={inputClass} required />
                 </div>
                 {usageType === "professionnel" && (
-                  <div className="md:col-span-2">
-                    <label className="mb-1.5 block text-xs font-medium text-foreground">Entreprise <span className="text-accent">*</span></label>
-                    <input type="text" placeholder="Nom de votre entreprise" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className={inputClass} required />
-                  </div>
+                  <>
+                    <div className="md:col-span-2">
+                      <label className="mb-1.5 block text-xs font-medium text-foreground">Entreprise <span className="text-accent">*</span></label>
+                      <input type="text" placeholder="Nom de votre entreprise" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className={inputClass} required />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="mb-1.5 block text-xs font-medium text-foreground">Email</label>
+                      <input type="email" placeholder="votre@email.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputClass} />
+                    </div>
+                  </>
                 )}
                 <div className="md:col-span-2">
                   <label className="mb-1.5 block text-xs font-medium text-foreground">Ville</label>
