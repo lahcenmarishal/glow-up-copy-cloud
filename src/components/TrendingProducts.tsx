@@ -25,7 +25,7 @@ const TrendingProducts = () => {
       <div className="container mx-auto px-4 md:px-16">
         <div className="mb-6 md:mb-8">
           <h2 className="font-display text-xl font-bold text-foreground uppercase md:text-3xl">Produits Tendances</h2>
-          <p className="mt-1 text-xs text-muted-foreground md:mt-2 md:text-sm">Découvrez les dernières et meilleures nouveautés des marques Impulse Fitness.</p>
+          <p className="mt-1 text-xs text-muted-foreground md:mt-2 md:text-sm">Découvrez les dernières et meilleures nouveautés de la marque Impulse Fitness.</p>
         </div>
         <div className="relative">
           <button onClick={() => scroll("left")} className="absolute -left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-background/90 p-1.5 shadow-lg border border-border text-foreground hover:bg-secondary md:-left-4 md:p-2">
