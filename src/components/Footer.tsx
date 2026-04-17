@@ -50,13 +50,6 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h4 className="mb-3 text-xs font-semibold uppercase tracking-widest text-background/80">Fonctionnel</h4>
-              <ul className="space-y-2 text-xs text-background/50">
-                <li><a href="/professionnel/fonctionnel" className="hover:text-background">Professionnel</a></li>
-                <li><a href="/residentiel/fonctionnel" className="hover:text-background">Résidentiel</a></li>
-              </ul>
-            </div>
-            <div>
               <h4 className="mb-3 text-xs font-semibold uppercase tracking-widest text-background/80">Résidentiel</h4>
               <ul className="space-y-2 text-xs text-background/50">
                 <li><a href="/residentiel/cardio" className="hover:text-background">Cardio</a></li>
