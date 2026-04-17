@@ -69,9 +69,27 @@ const CategoryCardsSection = () => {
                   </div>
                 ) : (
                   <div className="mt-2 md:mt-3">
-                    <span className={`inline-block text-[10px] font-semibold border-b pb-0.5 transition-colors sm:text-sm ${isRed ? "text-accent border-accent/60 group-hover:border-accent" : "text-background border-background/60 group-hover:border-background"}`}>
-                      {card.cta_text}
-                    </span>
+                    <span
+  className={`
+    inline-block
+    text-[12px]
+    sm:text-sm
+    font-semibold
+    uppercase
+    tracking-wide
+    border-b
+    pb-1
+    transition-all
+    duration-200
+    ${
+      isRed
+        ? "text-accent border-accent/70 group-hover:border-accent"
+        : "text-background border-background/70 group-hover:border-background"
+    }
+  `}
+>
+  {card.cta_text}
+</span>
                   </div>
                 )}
               </div>
