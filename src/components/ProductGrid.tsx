@@ -27,7 +27,6 @@ const ProductGrid = ({ defaultCategory, defaultSubcategory, defaultUsageType, ti
   });
 
   let filtered = filter === "Tous" ? (products ?? []) : (products ?? []).filter((p) => p.category === filter);
-  // Note: "back to catalogue" link in product detail page is handled there.
   if (defaultSubcategory) filtered = filtered.filter((p) => (p as any).subcategory === defaultSubcategory);
   if (defaultUsageType && defaultUsageType !== "both") filtered = filtered.filter((p) => { const ut = (p as any).usage_type; return ut === defaultUsageType || ut === "both"; });
 
