@@ -97,14 +97,14 @@ const ContactSection = () => {
                     <Building2 className="h-10 w-10 text-muted-foreground group-hover:text-accent" />
                     <div className="text-center">
                       <p className="text-base font-semibold text-foreground">Professionnel</p>
-                      <p className="mt-1 text-xs text-muted-foreground">Salle, hôtel, club, entreprise…</p>
+                      <p className="mt-1 text-xs text-muted-foreground">Centre de fitness, Hotel…</p>
                     </div>
                   </button>
                   <button type="button" onClick={() => setUsageType("residentiel")} className="group flex flex-col items-center gap-3 rounded-md border-2 border-border bg-background p-6 transition-all hover:border-accent">
                     <Home className="h-10 w-10 text-muted-foreground group-hover:text-accent" />
                     <div className="text-center">
                       <p className="text-base font-semibold text-foreground">Résidentiel</p>
-                      <p className="mt-1 text-xs text-muted-foreground">Home gym, usage personnel…</p>
+                      <p className="mt-1 text-xs text-muted-foreground">Home gym, Résidence…</p>
                     </div>
                   </button>
                 </div>
