@@ -43,7 +43,7 @@ const ProductDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-background"><Navbar /><div className="pt-16 md:pt-20">
-    <div className="container mx-auto px-4 py-4 md:px-16 md:py-6"><button onClick={() => window.history.back()} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Retour au catalogue</button></div>
+    <div className="container mx-auto px-4 py-4 md:px-16 md:py-6"><button onClick={() => window.history.back()} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Retour</button></div>
     <section className="container mx-auto px-4 md:px-16"><div className="grid gap-6 md:gap-8 lg:grid-cols-2">
     <div>
       <div ref={imageRef} className="relative aspect-square overflow-hidden rounded-sm bg-card" onClick={() => { setLightboxOpen(true); }}>
