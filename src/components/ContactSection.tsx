@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Send, Phone, Mail, MapPin, Clock, Instagram, Facebook, Youtube } from "lucide-react";
+import { Send, Phone, Mail, MapPin, Clock, Instagram, Facebook, Youtube, Building2, Home } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -8,8 +8,11 @@ const TikTokIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V9.14a8.16 8.16 0 004.76 1.52v-3.4a4.85 4.85 0 01-1-.57z"/></svg>
 );
 
+type UsageType = "professionnel" | "residentiel" | null;
+
 const ContactSection = () => {
-  const [form, setForm] = useState({ full_name: "", email: "", phone: "", company: "", message: "" });
+  const [usageType, setUsageType] = useState<UsageType>(null);
+  const [form, setForm] = useState({ full_name: "", phone: "", company: "", city: "", message: "" });
   const [sending, setSending] = useState(false);
 
   const { data: settings } = useQuery({
@@ -27,12 +30,15 @@ const ContactSection = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.full_name.trim() || !form.email.trim()) { toast.error("Veuillez remplir les champs obligatoires."); return; }
+    if (!usageType) return;
+    if (!form.full_name.trim() || !form.phone.trim()) { toast.error("Nom et téléphone obligatoires."); return; }
+    if (usageType === "professionnel" && !form.company.trim()) { toast.error("Nom de l'entreprise obligatoire."); return; }
     setSending(true);
+    const message = `[CONTACT - Usage ${usageType}]\n${usageType === "professionnel" ? `Entreprise: ${form.company}\n` : ""}Ville: ${form.city}\n\nMessage:\n${form.message || "—"}`;
     const { error } = await supabase.from("contact_requests").insert({
-      full_name: form.full_name, email: form.email, phone: form.phone || null, company: form.company || null, message: form.message || null,
+      full_name: form.full_name, email: `${form.phone}@no-email.local`, phone: form.phone, company: usageType === "professionnel" ? form.company : null, message,
     });
-    if (error) { toast.error("Erreur lors de l'envoi."); } else { toast.success("Demande envoyée avec succès !"); setForm({ full_name: "", email: "", phone: "", company: "", message: "" }); }
+    if (error) { toast.error("Erreur lors de l'envoi."); } else { toast.success("Demande envoyée avec succès !"); setForm({ full_name: "", phone: "", company: "", city: "", message: "" }); setUsageType(null); }
     setSending(false);
   };
 
