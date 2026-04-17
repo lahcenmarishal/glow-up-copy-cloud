@@ -84,7 +84,7 @@ const Navbar = () => {
 
         <div className="hidden items-center justify-center gap-8 lg:flex">
           <MegaMenu label="Professionnel">
-            <div className="flex gap-8">
+            <div className="flex flex-col gap-3 min-w-[160px]">
               {categories.map((c) => (
                 <a key={c.slug} href={`/professionnel/${c.slug}`} className="text-sm text-background/70 transition-colors hover:text-background font-medium">
                   {c.label}
@@ -93,7 +93,7 @@ const Navbar = () => {
             </div>
           </MegaMenu>
           <MegaMenu label="Résidentiel">
-            <div className="flex gap-8">
+            <div className="flex flex-col gap-3 min-w-[160px]">
               {categories.map((c) => (
                 <a key={c.slug} href={`/residentiel/${c.slug}`} className="text-sm text-background/70 transition-colors hover:text-background font-medium">
                   {c.label}
