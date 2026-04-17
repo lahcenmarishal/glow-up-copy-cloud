@@ -89,32 +89,61 @@ const ContactSection = () => {
 
           <div className="rounded-xl border border-border bg-card p-6 shadow-sm md:p-8 lg:col-span-3">
             <p className="mb-6 text-lg font-bold text-foreground">Remplissez le formulaire et nous vous contacterons dans les plus brefs délais.</p>
-            <form className="grid grid-cols-1 gap-4 md:grid-cols-2" onSubmit={handleSubmit}>
+            {!usageType ? (
               <div>
-                <label className="mb-1.5 block text-xs font-medium text-foreground">Nom complet <span className="text-accent">*</span></label>
-                <input type="text" placeholder="Votre nom" value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} className={inputClass} required />
+                <h3 className="mb-4 text-sm font-semibold text-foreground">Sélectionnez votre type d'usage :</h3>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <button type="button" onClick={() => setUsageType("professionnel")} className="group flex flex-col items-center gap-3 rounded-md border-2 border-border bg-background p-6 transition-all hover:border-accent">
+                    <Building2 className="h-10 w-10 text-muted-foreground group-hover:text-accent" />
+                    <div className="text-center">
+                      <p className="text-base font-semibold text-foreground">Professionnel</p>
+                      <p className="mt-1 text-xs text-muted-foreground">Salle, hôtel, club, entreprise…</p>
+                    </div>
+                  </button>
+                  <button type="button" onClick={() => setUsageType("residentiel")} className="group flex flex-col items-center gap-3 rounded-md border-2 border-border bg-background p-6 transition-all hover:border-accent">
+                    <Home className="h-10 w-10 text-muted-foreground group-hover:text-accent" />
+                    <div className="text-center">
+                      <p className="text-base font-semibold text-foreground">Résidentiel</p>
+                      <p className="mt-1 text-xs text-muted-foreground">Home gym, usage personnel…</p>
+                    </div>
+                  </button>
+                </div>
               </div>
-              <div>
-                <label className="mb-1.5 block text-xs font-medium text-foreground">Email <span className="text-accent">*</span></label>
-                <input type="email" placeholder="votre@email.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputClass} required />
-              </div>
-              <div>
-                <label className="mb-1.5 block text-xs font-medium text-foreground">Téléphone</label>
-                <input type="tel" placeholder="+212 6XX-XXXXXX" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={inputClass} />
-              </div>
-              <div>
-                <label className="mb-1.5 block text-xs font-medium text-foreground">Entreprise</label>
-                <input type="text" placeholder="Nom de votre entreprise" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className={inputClass} />
-              </div>
-              <div className="md:col-span-2">
-                <label className="mb-1.5 block text-xs font-medium text-foreground">Message</label>
-                <textarea placeholder="Décrivez votre projet ou vos besoins..." rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className={inputClass} />
-              </div>
-              <button type="submit" disabled={sending} className="flex items-center justify-center gap-2 rounded-md bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90 disabled:opacity-50 md:col-span-2">
-                <Send className="h-4 w-4" />
-                {sending ? "Envoi en cours..." : "Envoyer"}
-              </button>
-            </form>
+            ) : (
+              <form className="grid grid-cols-1 gap-4 md:grid-cols-2" onSubmit={handleSubmit}>
+                <div className="md:col-span-2 mb-2 flex items-center gap-2">
+                  {usageType === "professionnel" ? <Building2 className="h-5 w-5 text-accent" /> : <Home className="h-5 w-5 text-accent" />}
+                  <span className="text-sm font-semibold text-foreground">{usageType === "professionnel" ? "Formulaire Professionnel" : "Formulaire Résidentiel"}</span>
+                  <button type="button" onClick={() => setUsageType(null)} className="ml-auto text-xs text-muted-foreground hover:text-foreground">Changer</button>
+                </div>
+                <div>
+                  <label className="mb-1.5 block text-xs font-medium text-foreground">Nom complet <span className="text-accent">*</span></label>
+                  <input type="text" placeholder="Votre nom" value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} className={inputClass} required />
+                </div>
+                <div>
+                  <label className="mb-1.5 block text-xs font-medium text-foreground">Téléphone <span className="text-accent">*</span></label>
+                  <input type="tel" placeholder="+212 6XX-XXXXXX" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={inputClass} required />
+                </div>
+                {usageType === "professionnel" && (
+                  <div className="md:col-span-2">
+                    <label className="mb-1.5 block text-xs font-medium text-foreground">Entreprise <span className="text-accent">*</span></label>
+                    <input type="text" placeholder="Nom de votre entreprise" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className={inputClass} required />
+                  </div>
+                )}
+                <div className="md:col-span-2">
+                  <label className="mb-1.5 block text-xs font-medium text-foreground">Ville</label>
+                  <input type="text" placeholder="Votre ville" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} className={inputClass} />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="mb-1.5 block text-xs font-medium text-foreground">Message</label>
+                  <textarea placeholder="Décrivez votre projet ou vos besoins..." rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className={inputClass} />
+                </div>
+                <button type="submit" disabled={sending} className="flex items-center justify-center gap-2 rounded-md bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90 disabled:opacity-50 md:col-span-2">
+                  <Send className="h-4 w-4" />
+                  {sending ? "Envoi en cours..." : "Envoyer"}
+                </button>
+              </form>
+            )}
           </div>
         </div>
 
