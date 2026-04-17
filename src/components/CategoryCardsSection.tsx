@@ -55,21 +55,21 @@ const CategoryCardsSection = () => {
                 <h3 className="font-display text-base font-bold text-background sm:text-xl md:text-3xl lg:text-4xl">{card.title}</h3>
                 {card.description && <p className="mt-1 text-[11px] font-semibold normal-case tracking-widest text-background/60 sm:text-sm md:text-base">{card.description}</p>}
                 {showSubButtons ? (
-                  <div className="mt-4 flex flex-col gap-2.5 md:mt-6 md:gap-3 items-start w-fit">
+                  <div className="mt-3 flex flex-col gap-1.5 md:mt-4 md:gap-2 items-start">
                     {subCats.map((sc) => (
                       <a
                         key={sc.slug}
                         href={`/${slug}/${sc.slug}`}
                         onClick={(e) => e.stopPropagation()}
-                        className="block w-48 md:w-60 text-center rounded-sm bg-accent px-6 py-3 text-xs font-bold uppercase tracking-wider text-accent-foreground transition-colors hover:bg-accent/90"
+                        className="inline-block text-[10px] font-semibold text-background border-b border-background/60 pb-0.5 transition-colors hover:border-background sm:text-sm"
                       >
                         {sc.label}
                       </a>
                     ))}
                   </div>
                 ) : (
-                  <div className="mt-4 md:mt-6">
-                    <span className="inline-block w-48 md:w-60 text-center rounded-sm bg-accent px-6 py-3 text-xs font-bold uppercase tracking-wider text-accent-foreground transition-colors group-hover:bg-accent/90">
+                  <div className="mt-2 md:mt-3">
+                    <span className={`inline-block text-[10px] font-semibold border-b pb-0.5 transition-colors sm:text-sm ${isRed ? "text-accent border-accent/60 group-hover:border-accent" : "text-background border-background/60 group-hover:border-background"}`}>
                       {card.cta_text}
                     </span>
                   </div>
