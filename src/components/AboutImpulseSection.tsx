@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
-import { Shield, Lightbulb, Palette, Package, Wrench, HeartPulse, Star, Users } from "lucide-react";
+import { Shield, Lightbulb, Palette, Package, Wrench, HeartPulse, Star, Users, packageplus } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
-const iconMap: Record<string, any> = { Shield, Lightbulb, Palette, Package, Wrench, HeartPulse, Star, Users };
+const iconMap: Record<string, any> = { Shield, Lightbulb, Palette, Package, Wrench, HeartPulse, Star, Users, packageplus };
 
 const AboutImpulseSection = () => {
   const { data: sections, isLoading } = useQuery({
