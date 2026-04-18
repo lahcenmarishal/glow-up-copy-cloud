@@ -106,7 +106,7 @@ const CategoryPage = ({ usageType }: Props) => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="group relative overflow-hidden border-[1.5px] border-background h-[200px] sm:h-[230px] lg:h-[260px] xl:h-[300px]"
+                className="group relative overflow-hidden border-[1.5px] border-background aspect-square max-h-[260px]"
               >
                 <img
                   src={sub.image_url || "/placeholder.svg"}
