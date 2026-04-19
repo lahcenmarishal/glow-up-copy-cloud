@@ -130,17 +130,17 @@ const Navbar = () => {
               </div>
             )}
           </div>
-          <button onClick={() => setIsOpen(true)} className="relative flex items-center gap-2 rounded-sm bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90">
+          <button onClick={() => setIsOpen(true)} className="btn-slide btn-slide-accent relative h-9 px-4 text-xs rounded-sm">
             <FileText className="h-4 w-4" /> Voir le devis
-            {itemCount > 0 && <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-accent-foreground">{itemCount}</span>}
+            {itemCount > 0 && <span className="absolute -right-1.5 -top-1.5 z-10 flex h-4 w-4 items-center justify-center rounded-full bg-foreground text-[10px] font-bold text-background">{itemCount}</span>}
           </button>
         </div>
 
         <div className="flex items-center gap-2 justify-self-end lg:hidden">
-          <button onClick={() => setIsOpen(true)} className="relative flex items-center gap-2 rounded-sm bg-accent px-3 py-2 text-xs font-semibold text-accent-foreground transition-colors hover:bg-accent/90">
+          <button onClick={() => setIsOpen(true)} className="btn-slide btn-slide-accent relative h-9 px-3 text-xs rounded-sm">
             <FileText className="h-4 w-4" />
             <span className="hidden sm:inline">Devis</span>
-            {itemCount > 0 && <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-accent-foreground">{itemCount}</span>}
+            {itemCount > 0 && <span className="absolute -right-1.5 -top-1.5 z-10 flex h-4 w-4 items-center justify-center rounded-full bg-foreground text-[10px] font-bold text-background">{itemCount}</span>}
           </button>
           <button onClick={() => setOpen(!open)} className="p-2 text-background">
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
