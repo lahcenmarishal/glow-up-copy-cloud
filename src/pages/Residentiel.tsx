@@ -29,7 +29,7 @@ const ResidentielPage = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="pt-24">
-        <ProductGrid defaultCategory={categoryName} defaultSubcategory={subcategoryName} defaultUsageType="residentiel" title={title} subtitle="Usage résidentiel" />
+        <ProductGrid defaultCategory={categoryName} defaultSubcategory={subcategoryName} defaultSubcategorySlug={subcategory} defaultUsageType="residentiel" title={title} subtitle="Usage résidentiel" />
       </div>
       <Footer />
     </div>
