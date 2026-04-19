@@ -11,7 +11,7 @@ const buttonVariants = cva(
       variant: {
         default: "btn-slide-accent btn-slide",
         destructive: "btn-slide-accent btn-slide",
-        outline: "btn-slide",
+        outline: "btn-slide-accent btn-slide",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-accent underline-offset-4 hover:underline",
