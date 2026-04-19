@@ -97,7 +97,7 @@ const CategoryPage = ({ usageType }: Props) => {
 
         {/* Subcategory cards — 2 landscape cards per row */}
         {subcategories && subcategories.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-[2px] bg-background">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-[2px] bg-background">
             {subcategories.map((sub: any, i: number) => (
               <motion.a
                 key={sub.id}
@@ -106,24 +106,28 @@ const CategoryPage = ({ usageType }: Props) => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="group relative overflow-hidden border-[1.5px] border-background h-[200px] sm:h-[230px] lg:h-[260px] xl:h-[300px]"
+                className="group relative block overflow-hidden border-[1.5px] border-background"
               >
-                <img
-                  src={sub.image_url || "/placeholder.svg"}
-                  alt={sub.title}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
+                {/* Aspect ratio wrapper to keep card consistent and image always fully framed */}
+                <div className="relative w-full aspect-[16/10] bg-secondary overflow-hidden">
+                  <img
+                    src={sub.image_url || "/placeholder.svg"}
+                    alt={sub.title}
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
 
-                <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between p-6">
-                  <h3 className="font-display text-lg font-bold text-white md:text-xl lg:text-2xl">
-                    {sub.title}
-                  </h3>
+                  <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between p-4 sm:p-6">
+                    <h3 className="font-display text-base font-bold text-white sm:text-xl lg:text-2xl">
+                      {sub.title}
+                    </h3>
 
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/40 text-white transition-colors group-hover:bg-white group-hover:text-black">
-                    +
-                  </span>
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/40 text-white transition-colors group-hover:bg-white group-hover:text-black">
+                      +
+                    </span>
+                  </div>
                 </div>
               </motion.a>
             ))}
