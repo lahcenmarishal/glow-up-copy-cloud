@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactSection from "@/components/ContactSection";
+import FaqSection from "@/components/FaqSection";
 import contactHero from "@/assets/contact-hero.jpg";
 
 const ContactPage = () => {
@@ -16,6 +17,7 @@ const ContactPage = () => {
         </div>
       </div>
       <ContactSection />
+      <FaqSection />
       <Footer />
     </div>
   );

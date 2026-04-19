@@ -1,6 +1,6 @@
 import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
-import { LogOut, Package, MessageSquare, Settings, ArrowLeft, Image, Briefcase, FolderOpen, LayoutGrid, Info, Layers } from "lucide-react";
+import { LogOut, Package, MessageSquare, Settings, ArrowLeft, Image, Briefcase, FolderOpen, LayoutGrid, Info, Layers, Mail, HelpCircle, FileText } from "lucide-react";
 import AdminProducts from "@/components/admin/AdminProducts";
 import AdminContacts from "@/components/admin/AdminContacts";
 import AdminContactSettings from "@/components/admin/AdminContactSettings";
@@ -10,6 +10,9 @@ import AdminRealisations from "@/components/admin/AdminRealisations";
 import AdminCategoryCards from "@/components/admin/AdminCategoryCards";
 import AdminAbout from "@/components/admin/AdminAbout";
 import AdminCategories from "@/components/admin/AdminCategories";
+import AdminBlogs from "@/components/admin/AdminBlogs";
+import AdminFaqs from "@/components/admin/AdminFaqs";
+import AdminNewsletter from "@/components/admin/AdminNewsletter";
 import logo from "@/assets/logo-new.png";
 
 const tabs = [
@@ -19,8 +22,11 @@ const tabs = [
   { id: "eq-categories", label: "Catégories", icon: Layers },
   { id: "consulting", label: "Consulting", icon: Briefcase },
   { id: "realisations", label: "Réalisations", icon: FolderOpen },
+  { id: "blogs", label: "Blog", icon: FileText },
+  { id: "faqs", label: "FAQ", icon: HelpCircle },
   { id: "about", label: "À propos", icon: Info },
   { id: "contacts", label: "Demandes", icon: MessageSquare },
+  { id: "newsletter", label: "Newsletter", icon: Mail },
   { id: "settings", label: "Coordonnées", icon: Settings },
 ] as const;
 
@@ -68,8 +74,11 @@ const AdminPage = () => {
         {activeTab === "eq-categories" && <AdminCategories />}
         {activeTab === "consulting" && <AdminConsulting />}
         {activeTab === "realisations" && <AdminRealisations />}
+        {activeTab === "blogs" && <AdminBlogs />}
+        {activeTab === "faqs" && <AdminFaqs />}
         {activeTab === "about" && <AdminAbout />}
         {activeTab === "contacts" && <AdminContacts />}
+        {activeTab === "newsletter" && <AdminNewsletter />}
         {activeTab === "settings" && <AdminContactSettings />}
       </main>
     </div>

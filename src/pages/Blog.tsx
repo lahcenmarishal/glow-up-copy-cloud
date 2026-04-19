@@ -1,0 +1,65 @@
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { motion } from "framer-motion";
+import { Calendar, ArrowRight } from "lucide-react";
+
+const BlogPage = () => {
+  const { data: posts, isLoading } = useQuery({
+    queryKey: ["blog-posts-public"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("blog_posts").select("*").eq("is_published", true).order("published_at", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <div className="pt-24">
+        <div className="bg-foreground py-16 md:py-24">
+          <div className="container mx-auto px-6 text-center">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">Notre blog</p>
+            <h1 className="font-display text-4xl font-bold text-background md:text-5xl">Conseils & inspirations fitness</h1>
+            <p className="mx-auto mt-4 max-w-2xl text-base text-background/70">Découvrez nos guides, conseils d'experts et actualités sur l'équipement professionnel et résidentiel.</p>
+          </div>
+        </div>
+
+        <section className="container mx-auto px-6 py-16 md:px-16">
+          {isLoading ? (
+            <div className="flex justify-center py-20"><div className="h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" /></div>
+          ) : !posts || posts.length === 0 ? (
+            <p className="py-20 text-center text-muted-foreground">Aucun article pour le moment.</p>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {posts.map((p: any, i: number) => (
+                <motion.article key={p.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.08 }}>
+                  <Link to={`/blog/${p.slug}`} className="group block">
+                    <div className="aspect-[16/10] overflow-hidden rounded-sm bg-secondary">
+                      {p.cover_image_url && <img src={p.cover_image_url} alt={p.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />}
+                    </div>
+                    <div className="mt-4">
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Calendar className="h-3 w-3" />
+                        <time>{new Date(p.published_at || p.created_at).toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" })}</time>
+                      </div>
+                      <h2 className="mt-2 font-display text-lg font-bold text-foreground transition-colors group-hover:text-accent md:text-xl">{p.title}</h2>
+                      <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{p.excerpt}</p>
+                      <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-accent">Lire l'article <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" /></span>
+                    </div>
+                  </Link>
+                </motion.article>
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
+      <Footer />
+    </div>
+  );
+};
+
+export default BlogPage;

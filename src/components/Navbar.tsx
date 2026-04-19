@@ -15,7 +15,7 @@ const MegaMenu = ({ label, children }: MegaMenuProps) => {
   const leave = () => { timeout.current = setTimeout(() => setOpen(false), 150); };
   return (
     <div onMouseEnter={enter} onMouseLeave={leave} className="relative">
-      <button className="flex items-center gap-1 text-sm font-semibold text-background/70 transition-colors hover:text-background uppercase tracking-wide">
+      <button className="flex items-center gap-1 text-xs font-semibold text-background/70 transition-colors hover:text-background uppercase tracking-wide">
         {label} <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
@@ -82,7 +82,7 @@ const Navbar = () => {
           <img src={logo} alt="IMPULSE FITNESS" className="h-7 w-auto md:h-8" />
         </Link>
 
-        <div className="hidden items-center justify-center gap-8 lg:flex">
+        <div className="hidden items-center justify-center gap-5 lg:flex xl:gap-7">
           <MegaMenu label="Professionnel">
             <div className="flex flex-col gap-3 min-w-[160px]">
               {categories.map((c) => (
@@ -101,9 +101,10 @@ const Navbar = () => {
               ))}
             </div>
           </MegaMenu>
-          <a href="/consulting" className="text-sm font-semibold text-background/70 uppercase tracking-wide transition-colors hover:text-background">Consulting</a>
-          <a href="/realisations" className="text-sm font-semibold text-background/70 uppercase tracking-wide transition-colors hover:text-background">Réalisations</a>
-          <a href="/contact" className="text-sm font-semibold text-background/70 uppercase tracking-wide transition-colors hover:text-background">Contactez-nous</a>
+          <a href="/consulting" className="text-xs font-semibold text-background/70 uppercase tracking-wide transition-colors hover:text-background">Consulting</a>
+          <a href="/realisations" className="text-xs font-semibold text-background/70 uppercase tracking-wide transition-colors hover:text-background">Réalisations</a>
+          <a href="/blog" className="text-xs font-semibold text-background/70 uppercase tracking-wide transition-colors hover:text-background">Blog</a>
+          <a href="/contact" className="text-xs font-semibold text-background/70 uppercase tracking-wide transition-colors hover:text-background">Contact</a>
         </div>
 
         <div className="hidden items-center gap-3 justify-self-end lg:flex">
@@ -164,6 +165,7 @@ const Navbar = () => {
             )}
             <a href="/consulting" onClick={() => setOpen(false)} className="block py-2 text-sm font-semibold text-background/80 uppercase">Consulting</a>
             <a href="/realisations" onClick={() => setOpen(false)} className="block py-2 text-sm font-semibold text-background/80 uppercase">Réalisations</a>
+            <a href="/blog" onClick={() => setOpen(false)} className="block py-2 text-sm font-semibold text-background/80 uppercase">Blog</a>
             <a href="/contact" onClick={() => setOpen(false)} className="block py-2 text-sm font-semibold text-background/80 uppercase">Contact</a>
           </div>
           <div className="mt-4">

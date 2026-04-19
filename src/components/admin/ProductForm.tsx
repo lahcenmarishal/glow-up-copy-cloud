@@ -68,6 +68,8 @@ const ProductForm = ({ product, onClose }: { product: any | null; onClose: () =>
   const [isTrending, setIsTrending] = useState(product?.is_trending || draft?.isTrending || false);
   const [isPublished, setIsPublished] = useState(product?.is_published ?? draft?.isPublished ?? false);
   const [sortOrder, setSortOrder] = useState(product?.sort_order || draft?.sortOrder || 0);
+  const [rangeCode, setRangeCode] = useState<string>(product?.range_code || draft?.rangeCode || "");
+  const [availableRanges, setAvailableRanges] = useState<Array<{ code: string; usage_type: string }>>([]);
   const [saving, setSaving] = useState(false);
   const [loadingGallery, setLoadingGallery] = useState(isEditing);
 
@@ -78,11 +80,11 @@ const ProductForm = ({ product, onClose }: { product: any | null; onClose: () =>
       localStorage.setItem(DRAFT_KEY, JSON.stringify({
         name, category, usageType, subcategory, shortDesc, description,
         warrantyItems, specs, features, imageUrl, hoverImageUrl,
-        isTrending, isPublished, sortOrder,
+        isTrending, isPublished, sortOrder, rangeCode,
       }));
     }, 500);
     return () => clearTimeout(timer);
-  }, [isEditing, name, category, usageType, subcategory, shortDesc, description, warrantyItems, specs, features, imageUrl, hoverImageUrl, isTrending, isPublished, sortOrder]);
+  }, [isEditing, name, category, usageType, subcategory, shortDesc, description, warrantyItems, specs, features, imageUrl, hoverImageUrl, isTrending, isPublished, sortOrder, rangeCode]);
 
   const mainImageRef = useRef<HTMLInputElement>(null);
   const hoverImageRef = useRef<HTMLInputElement>(null);
@@ -118,6 +120,30 @@ const ProductForm = ({ product, onClose }: { product: any | null; onClose: () =>
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category, subcategory]);
+
+  // Fetch available ranges for the selected category/subcategory/usage
+  useEffect(() => {
+    let cancelled = false;
+    const subSlug = subcategory
+      .toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/&/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    const cat = category.toLowerCase();
+    const fetchRanges = async () => {
+      if (!subSlug) { setAvailableRanges([]); return; }
+      const { data } = await supabase.from("product_ranges").select("code, usage_type").eq("category", cat).eq("subcategory", subSlug).eq("is_active", true).order("sort_order");
+      if (cancelled) return;
+      // Filter by usage compatibility
+      const list = (data || []).filter((r) => usageType === "both" || r.usage_type === usageType);
+      // Dedupe by code
+      const seen = new Set<string>();
+      setAvailableRanges(list.filter((r) => seen.has(r.code) ? false : (seen.add(r.code), true)));
+    };
+    fetchRanges();
+    return () => { cancelled = true; };
+  }, [category, subcategory, usageType]);
 
   const uploadImage = async (file: File, folder: string): Promise<string> => {
     const ext = file.name.split(".").pop();
@@ -174,6 +200,7 @@ const ProductForm = ({ product, onClose }: { product: any | null; onClose: () =>
         is_trending: isTrending,
         is_published: isPublished,
         sort_order: sortOrder,
+        range_code: rangeCode || null,
       };
 
       let productId = product?.id;
@@ -244,6 +271,18 @@ const ProductForm = ({ product, onClose }: { product: any | null; onClose: () =>
             </select>
           </div>
         </div>
+
+        {availableRanges.length > 0 && (
+          <div>
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">
+              Gamme {availableRanges.length > 0 && <span className="text-muted-foreground/70">({availableRanges.length} disponibles pour cette sous-catégorie)</span>}
+            </label>
+            <select value={rangeCode} onChange={(e) => setRangeCode(e.target.value)} className={inputClass}>
+              <option value="">-- Aucune gamme --</option>
+              {availableRanges.map((r) => <option key={r.code} value={r.code}>{r.code}</option>)}
+            </select>
+          </div>
+        )}
 
         <div>
           <label className="mb-1 block text-xs font-medium text-muted-foreground">Description courte</label>
