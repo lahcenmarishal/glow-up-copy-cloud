@@ -47,6 +47,48 @@ export type Database = {
         }
         Relationships: []
       }
+      blog_posts: {
+        Row: {
+          author: string
+          content: string
+          cover_image_url: string | null
+          created_at: string
+          excerpt: string
+          id: string
+          is_published: boolean
+          published_at: string | null
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author?: string
+          content?: string
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt?: string
+          id?: string
+          is_published?: boolean
+          published_at?: string | null
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author?: string
+          content?: string
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt?: string
+          id?: string
+          is_published?: boolean
+          published_at?: string | null
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       category_cards: {
         Row: {
           created_at: string
@@ -268,6 +310,36 @@ export type Database = {
           },
         ]
       }
+      faqs: {
+        Row: {
+          answer: string
+          created_at: string
+          id: string
+          is_active: boolean
+          question: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          answer?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          question: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          answer?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          question?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       hero_slides: {
         Row: {
           created_at: string
@@ -310,6 +382,24 @@ export type Database = {
         }
         Relationships: []
       }
+      newsletter_subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+        }
+        Relationships: []
+      }
       product_images: {
         Row: {
           alt_text: string | null
@@ -345,6 +435,45 @@ export type Database = {
           },
         ]
       }
+      product_ranges: {
+        Row: {
+          category: string
+          code: string
+          created_at: string
+          id: string
+          is_active: boolean
+          label: string
+          sort_order: number
+          subcategory: string
+          updated_at: string
+          usage_type: string
+        }
+        Insert: {
+          category: string
+          code: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          label?: string
+          sort_order?: number
+          subcategory: string
+          updated_at?: string
+          usage_type: string
+        }
+        Update: {
+          category?: string
+          code?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          label?: string
+          sort_order?: number
+          subcategory?: string
+          updated_at?: string
+          usage_type?: string
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           category: string
@@ -357,6 +486,7 @@ export type Database = {
           is_published: boolean
           is_trending: boolean
           name: string
+          range_code: string | null
           short_description: string | null
           sort_order: number
           specs: Json | null
@@ -376,6 +506,7 @@ export type Database = {
           is_published?: boolean
           is_trending?: boolean
           name: string
+          range_code?: string | null
           short_description?: string | null
           sort_order?: number
           specs?: Json | null
@@ -395,6 +526,7 @@ export type Database = {
           is_published?: boolean
           is_trending?: boolean
           name?: string
+          range_code?: string | null
           short_description?: string | null
           sort_order?: number
           specs?: Json | null
