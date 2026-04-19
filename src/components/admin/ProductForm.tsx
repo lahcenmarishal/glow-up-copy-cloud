@@ -96,6 +96,29 @@ const ProductForm = ({ product, onClose }: { product: any | null; onClose: () =>
       });
   }
 
+  // Siblings in the same category + subcategory (for per-subcategory ordering)
+  const [siblings, setSiblings] = useState<Array<{ id: string; name: string; sort_order: number }>>([]);
+  useEffect(() => {
+    let cancelled = false;
+    const fetchSiblings = async () => {
+      let q = supabase.from("products").select("id, name, sort_order").eq("category", category);
+      if (subcategory) q = q.eq("subcategory", subcategory);
+      else q = q.is("subcategory", null);
+      const { data } = await q.order("sort_order").order("name");
+      if (cancelled || !data) return;
+      const list = data.filter((d) => d.id !== product?.id);
+      setSiblings(list);
+      // Auto-suggest next number for new products
+      if (!isEditing && (sortOrder === 0 || sortOrder == null)) {
+        const max = list.reduce((m, s) => Math.max(m, s.sort_order || 0), 0);
+        setSortOrder(max + 1);
+      }
+    };
+    fetchSiblings();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category, subcategory]);
+
   const uploadImage = async (file: File, folder: string): Promise<string> => {
     const ext = file.name.split(".").pop();
     const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
@@ -248,16 +271,50 @@ const ProductForm = ({ product, onClose }: { product: any | null; onClose: () =>
           </div>
         </div>
 
-        <div className="flex items-center gap-6">
-          <div>
-            <label className="mb-1 block text-xs font-medium text-muted-foreground">Ordre d'affichage</label>
-            <input type="number" value={sortOrder} onChange={(e) => setSortOrder(Number(e.target.value))} className={`${inputClass} w-24`} />
+        <div className="rounded-sm border border-border bg-card/50 p-4">
+          <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            Numéro d'affichage dans « {category}{subcategory ? ` · ${subcategory}` : ""} »
+          </label>
+          <div className="flex items-center gap-3">
+            <input
+              type="number"
+              min={1}
+              value={sortOrder}
+              onChange={(e) => setSortOrder(Number(e.target.value))}
+              className={`${inputClass} w-24`}
+            />
+            <p className="text-xs text-muted-foreground">
+              Le numéro 1 s'affiche en premier dans cette sous-catégorie. Chaque sous-catégorie a sa propre numérotation.
+            </p>
           </div>
-          <label className="flex items-center gap-2 cursor-pointer pt-4">
+          {siblings.length > 0 && (
+            <details className="mt-3">
+              <summary className="cursor-pointer text-xs font-medium text-accent hover:underline">
+                Voir l'ordre actuel ({siblings.length} produit{siblings.length > 1 ? "s" : ""})
+              </summary>
+              <ol className="mt-2 space-y-1 text-xs text-foreground">
+                {siblings
+                  .slice()
+                  .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
+                  .map((s) => (
+                    <li key={s.id} className="flex items-center gap-2">
+                      <span className="inline-flex h-5 w-5 items-center justify-center rounded-sm bg-secondary text-[10px] font-semibold">
+                        {s.sort_order || 0}
+                      </span>
+                      <span className="truncate">{s.name}</span>
+                    </li>
+                  ))}
+              </ol>
+            </details>
+          )}
+        </div>
+
+        <div className="flex items-center gap-6">
+          <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" checked={isTrending} onChange={(e) => setIsTrending(e.target.checked)} className="h-4 w-4 rounded border-border text-accent focus:ring-accent" />
             <span className="text-sm font-medium text-foreground">Produit tendance</span>
           </label>
-          <label className="flex items-center gap-2 cursor-pointer pt-4">
+          <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" checked={isPublished} onChange={(e) => setIsPublished(e.target.checked)} className="h-4 w-4 rounded border-border text-accent focus:ring-accent" />
             <span className="text-sm font-medium text-foreground">Publié</span>
           </label>
