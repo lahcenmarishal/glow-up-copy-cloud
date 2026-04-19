@@ -19,13 +19,13 @@
     --secondary-foreground: 0 0% 25%;
     --muted: 0 0% 94%;
     --muted-foreground: 0 0% 40%;
-    --accent: 10 80% 50%;
+    --accent: 0 75% 35%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 72% 51%;
+    --destructive: 0 75% 35%;
     --destructive-foreground: 0 0% 100%;
     --border: 0 0% 89%;
     --input: 0 0% 89%;
-    --ring: 10 80% 50%;
+    --ring: 0 75% 35%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 0 0% 9%;
@@ -34,7 +34,7 @@
     --sidebar-accent: 0 0% 94%;
     --sidebar-accent-foreground: 0 0% 9%;
     --sidebar-border: 0 0% 89%;
-    --sidebar-ring: 10 80% 50%;
+    --sidebar-ring: 0 75% 35%;
 
     --shadow-product: 0 4px 20px -4px rgba(0, 0, 0, 0.08);
     --shadow-hero: 0 10px 30px -10px rgba(0, 0, 0, 0.15);
@@ -56,21 +56,21 @@
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 64%;
-    --accent: 10 80% 50%;
+    --accent: 0 75% 35%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 62% 30%;
+    --destructive: 0 75% 30%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 15%;
     --input: 0 0% 15%;
-    --ring: 10 80% 50%;
+    --ring: 0 75% 35%;
     --sidebar-background: 0 0% 6%;
     --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 10 80% 50%;
+    --sidebar-primary: 0 75% 35%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 12%;
     --sidebar-accent-foreground: 0 0% 95%;
     --sidebar-border: 0 0% 12%;
-    --sidebar-ring: 10 80% 50%;
+    --sidebar-ring: 0 75% 35%;
   }
 }
 
@@ -125,10 +125,66 @@
   }
 
   .text-gradient-accent {
-    background: linear-gradient(135deg, hsl(var(--accent)), hsl(10 70% 55%));
+    background: linear-gradient(135deg, hsl(var(--accent)), hsl(0 65% 45%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  /* Slide-fill button effect: outlined button where dark fill slides in from left on hover */
+  .btn-slide {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    overflow: hidden;
+    border: 1.5px solid hsl(var(--foreground));
+    background-color: transparent;
+    color: hsl(var(--foreground));
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: color 0.4s ease;
+    z-index: 0;
+    isolation: isolate;
+  }
+  .btn-slide::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: hsl(var(--foreground));
+    transform: translateX(-101%);
+    transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+    z-index: -1;
+  }
+  .btn-slide:hover {
+    color: hsl(var(--background));
+  }
+  .btn-slide:hover::before {
+    transform: translateX(0);
+  }
+  /* Accent variant */
+  .btn-slide-accent {
+    border-color: hsl(var(--accent));
+    color: hsl(var(--accent));
+  }
+  .btn-slide-accent::before {
+    background-color: hsl(var(--accent));
+  }
+  .btn-slide-accent:hover {
+    color: hsl(var(--accent-foreground));
+  }
+  /* Inverted (for dark backgrounds) */
+  .btn-slide-inverse {
+    border-color: hsl(var(--background));
+    color: hsl(var(--background));
+  }
+  .btn-slide-inverse::before {
+    background-color: hsl(var(--background));
+  }
+  .btn-slide-inverse:hover {
+    color: hsl(var(--foreground));
   }
 
   .progress-bar-fill {
