@@ -17,12 +17,10 @@ const categoryTitleMap: Record<string, string> = { cardio: "Cardio", musculation
 const ProfessionnelPage = () => {
   const { category, subcategory } = useParams();
 
-  // If we have a category but no subcategory, show the category page
   if (category && !subcategory) {
     return <CategoryPage usageType="professionnel" />;
   }
 
-  // If we have a subcategory, show the product grid
   const categoryName = category ? categoryTitleMap[category] : undefined;
   const subcategoryName = subcategory ? subcategoryMap[subcategory] : undefined;
   const title = subcategoryName || (categoryName ? `${categoryName} Professionnel` : "Équipements Professionnel");
@@ -31,7 +29,14 @@ const ProfessionnelPage = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="pt-24">
-        <ProductGrid defaultCategory={categoryName} defaultSubcategory={subcategoryName} defaultUsageType="professionnel" title={title} subtitle="Usage professionnel" />
+        <ProductGrid
+          defaultCategory={categoryName}
+          defaultSubcategory={subcategoryName}
+          defaultSubcategorySlug={subcategory}
+          defaultUsageType="professionnel"
+          title={title}
+          subtitle="Usage professionnel"
+        />
       </div>
       <Footer />
     </div>
