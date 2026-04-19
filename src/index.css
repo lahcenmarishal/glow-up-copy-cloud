@@ -131,7 +131,8 @@
     background-clip: text;
   }
 
-  /* Global button style — filled red default, slide-out overlay on hover (red → outline) */
+  /* Global button: filled red default — on hover, the red fill slides out to the right
+     progressively revealing the transparent/outlined state underneath. Smooth color transitions. */
   .btn-slide,
   .btn-slide-accent {
     position: relative;
@@ -146,7 +147,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+    transition: color 0.4s ease, border-color 0.3s ease, transform 0.3s ease;
     z-index: 0;
     isolation: isolate;
   }
@@ -157,7 +158,7 @@
     inset: 0;
     background-color: hsl(var(--accent));
     transform: translateX(0);
-    transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+    transition: transform 0.55s cubic-bezier(0.65, 0, 0.35, 1);
     z-index: -1;
   }
   .btn-slide:hover::before,
@@ -166,11 +167,11 @@
   }
   .btn-slide:hover,
   .btn-slide-accent:hover {
-    color: hsl(var(--accent-foreground));
+    color: hsl(var(--accent));
     border-color: hsl(var(--accent));
   }
 
-  /* Inverted variant (for dark backgrounds): white outline default, white fill that slides out */
+  /* Inverted variant for dark backgrounds: white fill that slides out to the right */
   .btn-slide-inverse {
     position: relative;
     display: inline-flex;
@@ -184,7 +185,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+    transition: color 0.4s ease, border-color 0.3s ease, transform 0.3s ease;
     z-index: 0;
     isolation: isolate;
   }
@@ -194,7 +195,7 @@
     inset: 0;
     background-color: hsl(var(--background));
     transform: translateX(0);
-    transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+    transition: transform 0.55s cubic-bezier(0.65, 0, 0.35, 1);
     z-index: -1;
   }
   .btn-slide-inverse:hover::before {
