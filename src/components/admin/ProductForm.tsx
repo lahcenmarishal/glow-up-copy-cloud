@@ -272,6 +272,18 @@ const ProductForm = ({ product, onClose }: { product: any | null; onClose: () =>
           </div>
         </div>
 
+        {availableRanges.length > 0 && (
+          <div>
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">
+              Gamme {availableRanges.length > 0 && <span className="text-muted-foreground/70">({availableRanges.length} disponibles pour cette sous-catégorie)</span>}
+            </label>
+            <select value={rangeCode} onChange={(e) => setRangeCode(e.target.value)} className={inputClass}>
+              <option value="">-- Aucune gamme --</option>
+              {availableRanges.map((r) => <option key={r.code} value={r.code}>{r.code}</option>)}
+            </select>
+          </div>
+        )}
+
         <div>
           <label className="mb-1 block text-xs font-medium text-muted-foreground">Description courte</label>
           <textarea value={shortDesc} onChange={(e) => setShortDesc(e.target.value)} rows={2} className={inputClass} placeholder="Résumé affiché sur la page produit" />
