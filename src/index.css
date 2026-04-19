@@ -131,60 +131,77 @@
     background-clip: text;
   }
 
-  /* Slide-fill button effect: outlined button where dark fill slides in from left on hover */
-  .btn-slide {
+  /* Global button style — filled red default, slide-out overlay on hover (red → outline) */
+  .btn-slide,
+  .btn-slide-accent {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     overflow: hidden;
-    border: 1.5px solid hsl(var(--foreground));
+    border: 1.5px solid hsl(var(--accent));
+    background-color: transparent;
+    color: hsl(var(--accent-foreground));
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+    z-index: 0;
+    isolation: isolate;
+  }
+  .btn-slide::before,
+  .btn-slide-accent::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: hsl(var(--accent));
+    transform: translateX(0);
+    transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+    z-index: -1;
+  }
+  .btn-slide:hover::before,
+  .btn-slide-accent:hover::before {
+    transform: translateX(101%);
+  }
+  .btn-slide:hover,
+  .btn-slide-accent:hover {
+    color: hsl(var(--accent-foreground));
+    border-color: hsl(var(--accent));
+  }
+
+  /* Inverted variant (for dark backgrounds): white outline default, white fill that slides out */
+  .btn-slide-inverse {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    overflow: hidden;
+    border: 1.5px solid hsl(var(--background));
     background-color: transparent;
     color: hsl(var(--foreground));
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    transition: color 0.4s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
     z-index: 0;
     isolation: isolate;
   }
-  .btn-slide::before {
+  .btn-slide-inverse::before {
     content: "";
     position: absolute;
     inset: 0;
-    background-color: hsl(var(--foreground));
-    transform: translateX(-101%);
+    background-color: hsl(var(--background));
+    transform: translateX(0);
     transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
     z-index: -1;
   }
-  .btn-slide:hover {
-    color: hsl(var(--background));
-  }
-  .btn-slide:hover::before {
-    transform: translateX(0);
-  }
-  /* Accent variant */
-  .btn-slide-accent {
-    border-color: hsl(var(--accent));
-    color: hsl(var(--accent));
-  }
-  .btn-slide-accent::before {
-    background-color: hsl(var(--accent));
-  }
-  .btn-slide-accent:hover {
-    color: hsl(var(--accent-foreground));
-  }
-  /* Inverted (for dark backgrounds) */
-  .btn-slide-inverse {
-    border-color: hsl(var(--background));
-    color: hsl(var(--background));
-  }
-  .btn-slide-inverse::before {
-    background-color: hsl(var(--background));
+  .btn-slide-inverse:hover::before {
+    transform: translateX(101%);
   }
   .btn-slide-inverse:hover {
-    color: hsl(var(--foreground));
+    color: hsl(var(--background));
   }
 
   .progress-bar-fill {

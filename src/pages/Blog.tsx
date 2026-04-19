@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import { Calendar, ArrowRight } from "lucide-react";
+import blogHero from "@/assets/blog-hero.jpg";
 
 const BlogPage = () => {
   const { data: posts, isLoading } = useQuery({
@@ -20,11 +21,12 @@ const BlogPage = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="pt-24">
-        <div className="bg-foreground py-16 md:py-24">
-          <div className="container mx-auto px-6 text-center">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">Notre blog</p>
+        <div className="relative overflow-hidden py-20 md:py-28">
+          <img src={blogHero} alt="" className="absolute inset-0 h-full w-full object-cover" width={1920} height={800} />
+          <div className="absolute inset-0 bg-foreground/75" />
+          <div className="container relative z-10 mx-auto px-6 text-center">
             <h1 className="font-display text-4xl font-bold text-background md:text-5xl">Conseils & inspirations fitness</h1>
-            <p className="mx-auto mt-4 max-w-2xl text-base text-background/70">Découvrez nos guides, conseils d'experts et actualités sur l'équipement professionnel et résidentiel.</p>
+            <p className="mx-auto mt-4 max-w-2xl text-base text-background/80">Découvrez nos guides, conseils d'experts et actualités sur l'équipement professionnel et résidentiel.</p>
           </div>
         </div>
 
