@@ -2,14 +2,14 @@ import { motion } from "framer-motion";
 import {
   Shield,
   Lightbulb,
-  Component,
   Palette,
   Package,
   Wrench,
   HeartPulse,
   Star,
   Users,
-  PackagePlus
+  PackagePlus,
+  Component
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -24,7 +24,8 @@ const iconMap: Record<string, any> = {
   HeartPulse,
   Star,
   Users,
-  PackagePlus
+  PackagePlus,
+  Component
 };
 
 const AboutImpulseSection = () => {
