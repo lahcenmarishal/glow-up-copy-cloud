@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import {
   Shield,
   Lightbulb,
+  Component,
   Palette,
   Package,
   Wrench,
@@ -16,6 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 const iconMap: Record<string, any> = {
   Shield,
   Lightbulb,
+  Component,
   Palette,
   Package,
   Wrench,
