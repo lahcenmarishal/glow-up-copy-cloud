@@ -132,7 +132,7 @@ const Navbar = () => {
               </div>
             )}
           </div>
-          <button onClick={() => setIsOpen(true)} className="btn-slide btn-slide-accent relative h-9 px-5 text-xs rounded-full">
+          <button onClick={() => setIsOpen(true)} className="btn-slide btn-slide-accent relative h-9 px-5 text-xs rounded-md">
             <FileText className="h-4 w-4" /> Voir le devis
             {itemCount > 0 && <span className="absolute -right-1.5 -top-1.5 z-10 flex h-4 w-4 items-center justify-center rounded-full bg-foreground text-[10px] font-bold text-background">{itemCount}</span>}
           </button>
