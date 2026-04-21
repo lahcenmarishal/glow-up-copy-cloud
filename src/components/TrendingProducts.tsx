@@ -30,10 +30,10 @@ const TrendingProducts = () => {
           </div>
         </div>
         <div className="relative">
-          <button onClick={() => scroll("left")} aria-label="Précédent" className="absolute left-2 top-[40%] -translate-y-1/2 z-10 rounded-full bg-background p-2 shadow-md border border-border text-foreground hover:bg-secondary transition-colors md:p-2.5">
+          <button onClick={() => scroll("left")} aria-label="Précédent" className="absolute left-2 top-[90px] md:top-[130px] -translate-y-1/2 z-10 rounded-full bg-background p-2 shadow-md border border-border text-foreground hover:bg-secondary transition-colors md:p-2.5">
             <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
           </button>
-          <button onClick={() => scroll("right")} aria-label="Suivant" className="absolute right-2 top-[40%] -translate-y-1/2 z-10 rounded-full bg-accent p-2 shadow-md text-accent-foreground hover:bg-accent/90 transition-colors md:p-2.5">
+          <button onClick={() => scroll("right")} aria-label="Suivant" className="absolute right-2 top-[90px] md:top-[130px] -translate-y-1/2 z-10 rounded-full bg-accent p-2 shadow-md text-accent-foreground hover:bg-accent/90 transition-colors md:p-2.5">
             <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
           </button>
           <div ref={scrollRef} className="flex gap-3 overflow-x-auto pb-4 md:gap-5" style={{ scrollbarWidth: 'none' }}>
