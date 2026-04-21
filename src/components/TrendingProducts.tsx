@@ -29,12 +29,15 @@ const TrendingProducts = () => {
             <p className="mt-1 text-xs text-muted-foreground md:mt-2 md:text-sm">Découvrez les dernières et meilleures nouveautés de la marque Impulse Fitness.</p>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
-            <button onClick={() => scroll("left")} aria-label="Précédent" className="rounded-full bg-background p-2 shadow-md border border-border text-foreground hover:bg-secondary transition-colors">
-              <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Suivant" className="rounded-full bg-accent p-2 shadow-md text-accent-foreground hover:bg-accent/90 transition-colors">
-              <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
-            </button>
+          </div>
+        </div>
+        <div className="relative">
+          <button onClick={() => scroll("left")} aria-label="Précédent" className="absolute left-0 top-1/2 -translate-y-1/2 z-10 rounded-full bg-background p-2 shadow-md border border-border text-foreground hover:bg-secondary transition-colors md:p-2.5">
+            <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
+          </button>
+          <button onClick={() => scroll("right")} aria-label="Suivant" className="absolute right-0 top-1/2 -translate-y-1/2 z-10 rounded-full bg-accent p-2 shadow-md text-accent-foreground hover:bg-accent/90 transition-colors md:p-2.5">
+            <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
+          </button>
           </div>
         </div>
         <div className="relative">
