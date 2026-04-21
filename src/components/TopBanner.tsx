@@ -55,7 +55,7 @@ const TopBanner = () => {
             href={`tel:${phone.replace(/\s/g, "")}`}
             className="flex items-center gap-1.5 hover:text-accent transition-colors"
           >
-            <Phone className="h-3.5 w-3.5" />
+            <Phone className="h-4 w-4" />
             <span className="font-medium">{phone}</span>
           </a>
         )}
@@ -66,7 +66,7 @@ const TopBanner = () => {
             aria-label="Email de contact"
             title={emailContact}
           >
-            <Mail className="h-3.5 w-3.5" />
+            <Mail className="h-4 w-4" />
           </a>
         )}
         <Dialog open={open} onOpenChange={setOpen}>
@@ -76,7 +76,7 @@ const TopBanner = () => {
               aria-label="S'inscrire à la newsletter"
               title="Newsletter"
             >
-              <Send className="h-3.5 w-3.5" />
+              <Send className="h-4 w-4" />
             </button>
           </DialogTrigger>
           <DialogContent>
