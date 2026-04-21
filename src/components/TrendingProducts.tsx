@@ -31,7 +31,7 @@ const TrendingProducts = () => {
   {/* Flèche gauche */}
   <button
     onClick={() => scroll("left")}
-    className="absolute left-0 md:-left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-background/90 p-1.5 shadow-lg border border-border text-foreground hover:bg-secondary md:p-2"
+    className="absolute -left-4 md:-left-16 top-1/2 z-10 -translate-y-1/2 rounded-full bg-background/90 p-1.5 shadow-lg border border-border text-foreground hover:bg-secondary md:p-2"
   >
     <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
   </button>
@@ -70,7 +70,7 @@ const TrendingProducts = () => {
   {/* Flèche droite */}
   <button
     onClick={() => scroll("right")}
-    className="absolute right-0 md:-right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-accent p-1.5 shadow-lg text-accent-foreground hover:bg-accent/90 md:p-2"
+    className="absolute -right-4 md:-right-16 top-1/2 z-10 -translate-y-1/2 rounded-full bg-accent p-1.5 shadow-lg text-accent-foreground hover:bg-accent/90 md:p-2"
   >
     <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
   </button>
