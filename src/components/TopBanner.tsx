@@ -49,7 +49,7 @@ const TopBanner = () => {
 
   return (
     <div className="hidden md:block w-full bg-background text-foreground border-b border-border">
-      <div className="flex items-center justify-end gap-6 px-4 md:px-8 lg:px-16 py-1.5 text-xs">
+      <div className="flex items-center justify-center gap-8 px-4 md:px-8 lg:px-16 py-2.5 text-sm">
         {phone && (
           <a
             href={`tel:${phone.replace(/\s/g, "")}`}
