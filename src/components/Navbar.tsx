@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuoteCart } from "@/contexts/QuoteCartContext";
+import TopBanner from "./TopBanner";
 import logo from "@/assets/logo-new.png";
 
 interface MegaMenuProps { label: string; children: React.ReactNode; }
@@ -77,6 +78,7 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 z-50 w-full bg-foreground border-b-[3px] border-background">
+      <TopBanner />
       <div className="w-full grid grid-cols-[auto_1fr_auto] items-center px-4 py-2 md:px-8 lg:px-16 lg:grid-cols-[auto_1fr_auto]">
         <Link to="/" className="flex-shrink-0 justify-self-start">
           <img src={logo} alt="IMPULSE FITNESS" className="h-7 w-auto md:h-8" />
@@ -130,14 +132,14 @@ const Navbar = () => {
               </div>
             )}
           </div>
-          <button onClick={() => setIsOpen(true)} className="btn-slide btn-slide-accent relative h-9 px-4 text-xs rounded-sm">
+          <button onClick={() => setIsOpen(true)} className="btn-slide btn-slide-accent relative h-9 px-5 text-xs rounded-full">
             <FileText className="h-4 w-4" /> Voir le devis
             {itemCount > 0 && <span className="absolute -right-1.5 -top-1.5 z-10 flex h-4 w-4 items-center justify-center rounded-full bg-foreground text-[10px] font-bold text-background">{itemCount}</span>}
           </button>
         </div>
 
         <div className="flex items-center gap-2 justify-self-end lg:hidden">
-          <button onClick={() => setIsOpen(true)} className="btn-slide btn-slide-accent relative h-9 px-3 text-xs rounded-sm">
+          <button onClick={() => setIsOpen(true)} className="btn-slide btn-slide-accent relative h-9 px-4 text-xs rounded-full">
             <FileText className="h-4 w-4" />
             <span className="hidden sm:inline">Devis</span>
             {itemCount > 0 && <span className="absolute -right-1.5 -top-1.5 z-10 flex h-4 w-4 items-center justify-center rounded-full bg-foreground text-[10px] font-bold text-background">{itemCount}</span>}
