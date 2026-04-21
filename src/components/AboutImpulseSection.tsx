@@ -24,8 +24,7 @@ const iconMap: Record<string, any> = {
   HeartPulse,
   Star,
   Users,
-  PackagePlus,
-  Component
+  PackagePlus
 };
 
 const AboutImpulseSection = () => {
