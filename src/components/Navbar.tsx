@@ -137,7 +137,7 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-2 justify-self-end lg:hidden">
-          <button onClick={() => setIsOpen(true)} className="btn-slide btn-slide-accent relative h-9 px-3 text-xs rounded-sm">
+          <button onClick={() => setIsOpen(true)} className="btn-slide btn-slide-accent relative h-9 px-4 text-xs rounded-full">
             <FileText className="h-4 w-4" />
             <span className="hidden sm:inline">Devis</span>
             {itemCount > 0 && <span className="absolute -right-1.5 -top-1.5 z-10 flex h-4 w-4 items-center justify-center rounded-full bg-foreground text-[10px] font-bold text-background">{itemCount}</span>}
