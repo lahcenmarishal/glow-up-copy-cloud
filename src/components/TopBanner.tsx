@@ -64,9 +64,9 @@ const TopBanner = () => {
             href={`mailto:${emailContact}`}
             className="flex items-center gap-1.5 hover:text-accent transition-colors"
             aria-label="Email de contact"
-            title={emailContact}
           >
             <Mail className="h-4 w-4" />
+            <span className="font-medium">{emailContact}</span>
           </a>
         )}
         <Dialog open={open} onOpenChange={setOpen}>
@@ -74,9 +74,9 @@ const TopBanner = () => {
             <button
               className="flex items-center gap-1.5 hover:text-accent transition-colors"
               aria-label="S'inscrire à la newsletter"
-              title="Newsletter"
             >
               <Send className="h-4 w-4" />
+              <span className="font-medium">Newsletter</span>
             </button>
           </DialogTrigger>
           <DialogContent>
