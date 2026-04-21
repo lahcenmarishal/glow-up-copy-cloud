@@ -42,7 +42,7 @@ const TrendingProducts = () => {
       {/* ✅ Flèche gauche EXTREME */}
       <button
         onClick={() => scroll("left")}
-        className="absolute left-2 md:left-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-background/90 p-2 shadow-lg border border-border hover:bg-secondary"
+        className="fixed left-2 md:left-4 top-1/2 z-50 -translate-y-1/2 rounded-full bg-background/90 p-2 shadow-lg border border-border hover:bg-secondary"
       >
         <ChevronLeft className="h-5 w-5" />
       </button>
@@ -50,7 +50,7 @@ const TrendingProducts = () => {
       {/* ✅ Flèche droite EXTREME */}
       <button
         onClick={() => scroll("right")}
-        className="absolute right-2 md:right-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-accent p-2 shadow-lg text-accent-foreground hover:bg-accent/90"
+        className="fixed right-2 md:right-4 top-1/2 z-50 -translate-y-1/2 rounded-full bg-accent p-2 shadow-lg text-accent-foreground hover:bg-accent/90"
       >
         <ChevronRight className="h-5 w-5" />
       </button>
