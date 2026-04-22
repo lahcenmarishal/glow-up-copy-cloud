@@ -27,11 +27,11 @@ const TrendingProducts = () => {
           <h2 className="font-display text-xl font-bold text-foreground uppercase md:text-3xl">Produits Tendances</h2>
           <p className="mt-1 text-xs text-muted-foreground md:mt-2 md:text-sm">Découvrez les dernières et meilleures nouveautés de la marque Impulse Fitness.</p>
         </div>
-       <div className="relative">
+       <div className="relative overflow-visible">
   {/* Flèche gauche */}
   <button
     onClick={() => scroll("left")}
-    className="absolute left-[calc((100vw-100%)/2)] md:left-[calc((100vw-100%)/2-8px)] top-1/2 z-10 -translate-y-1/2 rounded-full bg-background/90 p-1.5 shadow-lg border border-border text-foreground hover:bg-secondary md:p-2"
+    className="absolute -left-4 md:-left-6 top-1/2 z-20 -translate-y-1/2 rounded-full bg-background/90 p-2 shadow-lg border border-border"
   >
     <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
   </button>
@@ -70,7 +70,7 @@ const TrendingProducts = () => {
   {/* Flèche droite */}
   <button
     onClick={() => scroll("right")}
-    className="absolute right-[calc((100vw-100%)/2)] md:right-[calc((100vw-100%)/2-8px)] top-1/2 z-10 -translate-y-1/2 rounded-full bg-accent p-1.5 shadow-lg text-accent-foreground hover:bg-accent/90 md:p-2"
+    className="absolute -right-4 md:-right-6 top-1/2 z-20 -translate-y-1/2 rounded-full bg-accent p-2 shadow-lg text-accent-foreground"
   >
     <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
   </button>
