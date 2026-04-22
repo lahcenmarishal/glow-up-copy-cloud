@@ -22,6 +22,7 @@ import AdminPage from "./pages/Admin";
 import AProposPage from "./pages/APropos";
 import BlogPage from "./pages/Blog";
 import BlogDetailPage from "./pages/BlogDetail";
+import PolitiqueConfidentialitePage from "./pages/PolitiqueConfidentialite";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,7 @@ const App = () => (
               <Route path="/a-propos" element={<AProposPage />} />
               <Route path="/blog" element={<BlogPage />} />
               <Route path="/blog/:slug" element={<BlogDetailPage />} />
+              <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialitePage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

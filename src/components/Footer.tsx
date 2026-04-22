@@ -67,7 +67,10 @@ const Footer = () => {
           </div>
           <NewsletterSignup />
         </div>
-        <div className="mt-8 border-t border-background/10 pt-6 text-center text-xs text-background/40">© {new Date().getFullYear()} Impulse Fitness. Tous droits réservés.</div>
+        <div className="mt-8 border-t border-background/10 pt-6 flex flex-col items-center gap-2 text-xs text-background/40">
+          <a href="/politique-de-confidentialite" className="hover:text-background transition-colors">Politique de confidentialité</a>
+          <div>© {new Date().getFullYear()} Impulse Fitness. Tous droits réservés.</div>
+        </div>
       </div>
     </footer>
   );

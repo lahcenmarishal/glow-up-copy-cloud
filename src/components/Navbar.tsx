@@ -16,7 +16,7 @@ const MegaMenu = ({ label, children }: MegaMenuProps) => {
   const leave = () => { timeout.current = setTimeout(() => setOpen(false), 150); };
   return (
     <div onMouseEnter={enter} onMouseLeave={leave} className="relative">
-      <button className="flex items-center gap-1 text-xs font-semibold text-background/70 transition-colors hover:text-background uppercase tracking-wide">
+      <button className="flex items-center gap-1 text-sm font-semibold text-background/70 transition-colors hover:text-background uppercase tracking-wide">
         {label} <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
@@ -35,6 +35,23 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { itemCount, setIsOpen } = useQuoteCart();
   const searchContainerRef = useRef<HTMLDivElement>(null);
+
+  const { data: menuLabels } = useQuery({
+    queryKey: ["menu-labels"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("contact_settings")
+        .select("key, value")
+        .in("key", ["menu_label_consulting", "menu_label_realisations"]);
+      if (error) throw error;
+      const map: Record<string, string> = {};
+      data.forEach((s: any) => { map[s.key] = s.value; });
+      return map;
+    },
+  });
+
+  const consultingLabel = menuLabels?.menu_label_consulting || "Consulting";
+  const realisationsLabel = menuLabels?.menu_label_realisations || "Réalisations";
 
   const toggleMobile = (key: string) => setMobileExpanded(mobileExpanded === key ? null : key);
 
@@ -79,12 +96,12 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 z-50 w-full bg-foreground border-b-[3px] border-background">
       <TopBanner />
-      <div className="w-full grid grid-cols-[auto_1fr_auto] items-center px-4 py-2 md:px-8 lg:px-16 lg:grid-cols-[auto_1fr_auto]">
+      <div className="w-full grid grid-cols-[auto_1fr_auto] items-center px-4 py-3 md:px-8 lg:px-16 md:py-4 lg:grid-cols-[auto_1fr_auto]">
         <Link to="/" className="flex-shrink-0 justify-self-start">
-          <img src={logo} alt="IMPULSE FITNESS" className="h-7 w-auto md:h-8" />
+          <img src={logo} alt="IMPULSE FITNESS" className="h-9 w-auto md:h-11" />
         </Link>
 
-        <div className="hidden items-center justify-center gap-5 lg:flex xl:gap-7">
+        <div className="hidden items-center justify-center gap-6 lg:flex xl:gap-8">
           <MegaMenu label="Professionnel">
             <div className="flex flex-col gap-3 min-w-[160px]">
               {categories.map((c) => (
@@ -103,10 +120,10 @@ const Navbar = () => {
               ))}
             </div>
           </MegaMenu>
-          <a href="/consulting" className="text-xs font-semibold text-background/70 uppercase tracking-wide transition-colors hover:text-background">Consulting</a>
-          <a href="/realisations" className="text-xs font-semibold text-background/70 uppercase tracking-wide transition-colors hover:text-background">Réalisations</a>
-          <a href="/blog" className="text-xs font-semibold text-background/70 uppercase tracking-wide transition-colors hover:text-background">Blog</a>
-          <a href="/contact" className="text-xs font-semibold text-background/70 uppercase tracking-wide transition-colors hover:text-background">Contact</a>
+          <a href="/consulting" className="text-sm font-semibold text-background/70 uppercase tracking-wide transition-colors hover:text-background">{consultingLabel}</a>
+          <a href="/realisations" className="text-sm font-semibold text-background/70 uppercase tracking-wide transition-colors hover:text-background">{realisationsLabel}</a>
+          <a href="/blog" className="text-sm font-semibold text-background/70 uppercase tracking-wide transition-colors hover:text-background">Blog</a>
+          <a href="/contact" className="text-sm font-semibold text-background/70 uppercase tracking-wide transition-colors hover:text-background">Contact</a>
         </div>
 
         <div className="hidden items-center gap-3 justify-self-end lg:flex">
@@ -165,8 +182,8 @@ const Navbar = () => {
                 {categories.map(c => <a key={c.slug} href={`/residentiel/${c.slug}`} onClick={() => setOpen(false)} className="block py-1.5 text-sm text-background/60 hover:text-background">{c.label}</a>)}
               </div>
             )}
-            <a href="/consulting" onClick={() => setOpen(false)} className="block py-2 text-sm font-semibold text-background/80 uppercase">Consulting</a>
-            <a href="/realisations" onClick={() => setOpen(false)} className="block py-2 text-sm font-semibold text-background/80 uppercase">Réalisations</a>
+            <a href="/consulting" onClick={() => setOpen(false)} className="block py-2 text-sm font-semibold text-background/80 uppercase">{consultingLabel}</a>
+            <a href="/realisations" onClick={() => setOpen(false)} className="block py-2 text-sm font-semibold text-background/80 uppercase">{realisationsLabel}</a>
             <a href="/blog" onClick={() => setOpen(false)} className="block py-2 text-sm font-semibold text-background/80 uppercase">Blog</a>
             <a href="/contact" onClick={() => setOpen(false)} className="block py-2 text-sm font-semibold text-background/80 uppercase">Contact</a>
           </div>
