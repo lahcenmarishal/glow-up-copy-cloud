@@ -48,8 +48,8 @@ const TopBanner = () => {
   };
 
   return (
-    <div className="hidden md:block w-full bg-background text-foreground border-b border-border">
-      <div className="flex items-center justify-center gap-6 px-4 md:px-8 lg:px-16 py-1.5 text-xs">
+    <div className="block w-full bg-background text-foreground border-b border-border">
+      <div className="flex items-center justify-center gap-4 md:gap-6 px-4 md:px-8 lg:px-16 py-1.5 text-xs">
         {phone && (
           <a
             href={`tel:${phone.replace(/\s/g, "")}`}
@@ -66,7 +66,7 @@ const TopBanner = () => {
             aria-label="Email de contact"
           >
             <Mail className="h-3.5 w-3.5" />
-            <span className="font-medium">{emailContact}</span>
+            <span className="font-medium hidden md:inline">{emailContact}</span>
           </a>
         )}
         <Dialog open={open} onOpenChange={setOpen}>
@@ -76,7 +76,7 @@ const TopBanner = () => {
               aria-label="S'inscrire à la newsletter"
             >
               <Send className="h-3.5 w-3.5" />
-              <span className="font-medium">Newsletter</span>
+              <span className="font-medium hidden md:inline">Newsletter</span>
             </button>
           </DialogTrigger>
           <DialogContent>
