@@ -96,9 +96,9 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 z-50 w-full bg-foreground border-b-[3px] border-background">
       <TopBanner />
-      <div className="w-full grid grid-cols-[auto_1fr_auto] items-center px-4 py-3 md:px-8 lg:px-16 md:py-4 lg:grid-cols-[auto_1fr_auto]">
+      <div className="w-full grid grid-cols-[auto_1fr_auto] items-center px-4 py-2 md:px-8 lg:px-16 md:py-2.5 lg:grid-cols-[auto_1fr_auto]">
         <Link to="/" className="flex-shrink-0 justify-self-start">
-          <img src={logo} alt="IMPULSE FITNESS" className="h-9 w-auto md:h-11" />
+          <img src={logo} alt="IMPULSE FITNESS" className="h-8 w-auto md:h-9" />
         </Link>
 
         <div className="hidden items-center justify-center gap-6 lg:flex xl:gap-8">
