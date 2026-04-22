@@ -51,18 +51,18 @@ const AdminPage = () => {
 
   return (
     <div className="flex min-h-screen bg-background">
-      <aside className="fixed left-0 top-0 z-40 flex h-full w-56 flex-col border-r border-border bg-card">
-        <div className="flex items-center gap-2 border-b border-border px-5 py-4">
+      <aside className="fixed left-0 top-0 z-40 flex h-screen w-56 flex-col border-r border-border bg-card">
+        <div className="flex flex-shrink-0 items-center gap-2 border-b border-border px-5 py-4">
           <img src={logo} alt="IMPULSE FITNESS" className="h-6 w-auto" />
         </div>
-        <nav className="flex-1 space-y-1 p-3">
+        <nav className="flex-1 space-y-1 overflow-y-auto p-3">
           {tabs.map((tab) => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex w-full items-center gap-3 rounded-sm px-3 py-2.5 text-sm font-medium transition-colors ${activeTab === tab.id ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-secondary hover:text-foreground"}`}>
               <tab.icon className="h-4 w-4" />{tab.label}
             </button>
           ))}
         </nav>
-        <div className="border-t border-border p-3 space-y-1">
+        <div className="flex-shrink-0 border-t border-border p-3 space-y-1">
           <a href="/" className="flex w-full items-center gap-3 rounded-sm px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Retour au site</a>
           <button onClick={signOut} className="flex w-full items-center gap-3 rounded-sm px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"><LogOut className="h-4 w-4" /> Déconnexion</button>
         </div>
