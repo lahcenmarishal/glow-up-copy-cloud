@@ -49,13 +49,13 @@ const TopBanner = () => {
 
   return (
     <div className="hidden md:block w-full bg-background text-foreground border-b border-border">
-      <div className="flex items-center justify-center gap-8 px-4 md:px-8 lg:px-16 py-2.5 text-sm">
+      <div className="flex items-center justify-center gap-6 px-4 md:px-8 lg:px-16 py-1.5 text-xs">
         {phone && (
           <a
             href={`tel:${phone.replace(/\s/g, "")}`}
             className="flex items-center gap-1.5 hover:text-accent transition-colors"
           >
-            <Phone className="h-4 w-4" />
+            <Phone className="h-3.5 w-3.5" />
             <span className="font-medium">{phone}</span>
           </a>
         )}
@@ -65,7 +65,7 @@ const TopBanner = () => {
             className="flex items-center gap-1.5 hover:text-accent transition-colors"
             aria-label="Email de contact"
           >
-            <Mail className="h-4 w-4" />
+            <Mail className="h-3.5 w-3.5" />
             <span className="font-medium">{emailContact}</span>
           </a>
         )}
@@ -75,7 +75,7 @@ const TopBanner = () => {
               className="flex items-center gap-1.5 hover:text-accent transition-colors"
               aria-label="S'inscrire à la newsletter"
             >
-              <Send className="h-4 w-4" />
+              <Send className="h-3.5 w-3.5" />
               <span className="font-medium">Newsletter</span>
             </button>
           </DialogTrigger>

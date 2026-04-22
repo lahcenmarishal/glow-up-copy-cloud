@@ -19,6 +19,8 @@ const fields = [
   { key: "social_facebook", label: "Facebook (URL)", icon: MessageSquare, placeholder: "https://facebook.com/votre-page" },
   { key: "social_tiktok", label: "TikTok (URL)", icon: MessageSquare, placeholder: "https://tiktok.com/@votre-page" },
   { key: "social_youtube", label: "YouTube (URL)", icon: MessageSquare, placeholder: "https://youtube.com/@votre-chaine" },
+  { key: "menu_label_consulting", label: "Menu - Libellé Consulting", icon: MessageSquare, placeholder: "Consulting" },
+  { key: "menu_label_realisations", label: "Menu - Libellé Réalisations", icon: MessageSquare, placeholder: "Réalisations" },
 ];
 
 const AdminContactSettings = () => {
