@@ -24,10 +24,25 @@ const HeroCarousel = () => {
   const [isTablet, setIsTablet] = useState(false);
   const [current, setCurrent] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [navHeight, setNavHeight] = useState(0);
 
   useEffect(() => {
     const check = () => { const w = window.innerWidth; setIsTablet(w >= MOBILE_BREAKPOINT && w < TABLET_BREAKPOINT); };
     check(); window.addEventListener("resize", check); return () => window.removeEventListener("resize", check);
+  }, []);
+
+  useEffect(() => {
+    const measure = () => {
+      const nav = document.getElementById("site-navbar");
+      if (nav) setNavHeight(nav.getBoundingClientRect().height);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : null;
+    const nav = document.getElementById("site-navbar");
+    if (ro && nav) ro.observe(nav);
+    const t = setTimeout(measure, 300);
+    return () => { window.removeEventListener("resize", measure); ro?.disconnect(); clearTimeout(t); };
   }, []);
 
   const { data: carouselMode } = useQuery({
@@ -68,12 +83,13 @@ const HeroCarousel = () => {
 
   const goTo = (i: number) => { setCurrent(i); setProgress(0); };
   const isResponsive = isMobile || isTablet;
-  const sectionClasses = isResponsive ? "relative mt-[45px] w-full max-w-full overflow-hidden bg-background" : "relative mt-[45px] w-full max-w-full overflow-hidden bg-foreground";
+  const sectionClasses = isResponsive ? "relative w-full max-w-full overflow-hidden bg-background" : "relative w-full max-w-full overflow-hidden bg-foreground";
+  const sectionStyle = { marginTop: navHeight ? `${navHeight}px` : undefined };
 
-  if (slides.length === 0) return <section className={sectionClasses}><div className="aspect-[1920/750] animate-pulse bg-foreground/10" /></section>;
+  if (slides.length === 0) return <section className={sectionClasses} style={sectionStyle}><div className="aspect-[1920/750] animate-pulse bg-foreground/10" /></section>;
 
   return (
-    <section className={sectionClasses}>
+    <section className={sectionClasses} style={sectionStyle}>
       <div className="relative w-full overflow-hidden" style={{ aspectRatio: "1920 / 750" }}>
         {slides.map((slide, i) => (
           <div key={i} className="absolute inset-0 transition-opacity duration-800 ease-in-out" style={{ opacity: i === current ? 1 : 0, zIndex: i === current ? 1 : 0 }}>
