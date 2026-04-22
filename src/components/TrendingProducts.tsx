@@ -27,53 +27,25 @@ const TrendingProducts = () => {
           <h2 className="font-display text-xl font-bold text-foreground uppercase md:text-3xl">Produits Tendances</h2>
           <p className="mt-1 text-xs text-muted-foreground md:mt-2 md:text-sm">Découvrez les dernières et meilleures nouveautés de la marque Impulse Fitness.</p>
         </div>
-       <div className="relative overflow-visible">
-  {/* Flèche gauche */}
-  <button
-    onClick={() => scroll("left")}
-    className="absolute -left-4 md:-left-6 top-1/2 z-20 -translate-y-1/2 rounded-full bg-background/90 p-2 shadow-lg border border-border"
-  >
-    <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
-  </button>
-
-  {/* Scroll */}
-  <div
-    ref={scrollRef}
-    className="flex gap-3 overflow-x-auto pb-4 px-0 md:gap-5"
-    style={{ scrollbarWidth: "none" }}
-  >
-    {products.map((p, i) => (
-      <motion.div
-        key={p.id}
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.4, delay: i * 0.05 }}
-        className="min-w-[180px] max-w-[220px] flex-shrink-0 md:min-w-[260px] md:max-w-[300px]"
-      >
-        <a href={`/produit/${p.id}`} className="group block">
-          <div className="aspect-square overflow-hidden rounded-sm bg-secondary/50">
-            <img
-              src={p.image_url || ""}
-              alt={p.name}
-              className="h-full w-full object-contain p-3 transition-transform duration-500 group-hover:scale-105 md:p-4"
-            />
+        <div className="relative">
+          <button onClick={() => scroll("left")} className="absolute -left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-background/90 p-1.5 shadow-lg border border-border text-foreground hover:bg-secondary md:-left-4 md:p-2">
+            <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
+          </button>
+          <div ref={scrollRef} className="flex gap-3 overflow-x-auto pb-4 px-6 md:gap-5 md:px-0" style={{ scrollbarWidth: 'none' }}>
+            {products.map((p, i) => (
+              <motion.div key={p.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.05 }} className="min-w-[180px] max-w-[220px] flex-shrink-0 md:min-w-[260px] md:max-w-[300px]">
+                <a href={`/produit/${p.id}`} className="group block">
+                  <div className="aspect-square overflow-hidden rounded-sm bg-secondary/50">
+                    <img src={p.image_url || ""} alt={p.name} className="h-full w-full object-contain p-3 transition-transform duration-500 group-hover:scale-105 md:p-4" />
+                  </div>
+                  <h3 className="mt-2 text-xs font-medium text-foreground md:mt-3 md:text-sm">{p.name}</h3>
+                </a>
+              </motion.div>
+            ))}
           </div>
-          <h3 className="mt-2 text-xs font-medium text-foreground md:mt-3 md:text-sm">
-            {p.name}
-          </h3>
-        </a>
-      </motion.div>
-    ))}
-  </div>
-
-  {/* Flèche droite */}
-  <button
-    onClick={() => scroll("right")}
-    className="absolute -right-4 md:-right-6 top-1/2 z-20 -translate-y-1/2 rounded-full bg-accent p-2 shadow-lg text-accent-foreground"
-  >
-    <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
-  </button>
+          <button onClick={() => scroll("right")} className="absolute -right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-accent p-1.5 shadow-lg text-accent-foreground hover:bg-accent/90 md:-right-4 md:p-2">
+            <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
+          </button>
         </div>
       </div>
     </section>
