@@ -21,8 +21,8 @@ const ResidentielPage = () => {
     return <CategoryPage usageType="residentiel" />;
   }
 
-  const categoryName = category ? categoryTitleMap[category] : undefined;
-  const subcategoryName = subcategory ? subcategoryMap[subcategory] : undefined;
+  const categoryName = category ? categoryTitleMap[category.toLowerCase()] : undefined;
+  const subcategoryName = subcategory ? subcategoryMap[subcategory.toLowerCase()] : undefined;
   const title = subcategoryName || (categoryName ? `${categoryName} Résidentiel` : "Équipements Résidentiel");
 
   return (

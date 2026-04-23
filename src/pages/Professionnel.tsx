@@ -21,8 +21,8 @@ const ProfessionnelPage = () => {
     return <CategoryPage usageType="professionnel" />;
   }
 
-  const categoryName = category ? categoryTitleMap[category] : undefined;
-  const subcategoryName = subcategory ? subcategoryMap[subcategory] : undefined;
+  const categoryName = category ? categoryTitleMap[category.toLowerCase()] : undefined;
+  const subcategoryName = subcategory ? subcategoryMap[subcategory.toLowerCase()] : undefined;
   const title = subcategoryName || (categoryName ? `${categoryName} Professionnel` : "Équipements Professionnel");
 
   return (
