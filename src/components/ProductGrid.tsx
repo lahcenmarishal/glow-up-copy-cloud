@@ -100,19 +100,16 @@ const ProductGrid = ({ defaultCategory, defaultSubcategory, defaultSubcategorySl
   // Build "back" link: when viewing a subcategory, point back to the parent category page
   const categorySlug = defaultCategory ? defaultCategory.toLowerCase() : undefined;
   const backHref = defaultUsageType && categorySlug ? `/${defaultUsageType}/${categorySlug}` : undefined;
-  const backLabel = defaultCategory ? `Retour à ${defaultCategory}` : "Retour";
 
   return (
     <section id="produits" className="bg-background py-12 md:py-20">
       <div className="container mx-auto px-4 md:px-16">
         {backHref && defaultSubcategory && (
-          <a
-            href={backHref}
-            className="mb-6 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-accent transition-colors hover:text-accent/80"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            {backLabel}
-          </a>
+          <div className="mb-4">
+            <a href={backHref} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+              <ArrowLeft className="h-4 w-4" /> Retour
+            </a>
+          </div>
         )}
         <div className="mb-8 flex flex-col gap-4 md:mb-12 md:flex-row md:items-end md:justify-between">
           <div>
