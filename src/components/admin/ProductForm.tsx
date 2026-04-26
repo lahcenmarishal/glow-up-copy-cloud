@@ -34,7 +34,7 @@ const loadDraft = () => {
 const ProductForm = ({ product, onClose }: { product: any | null; onClose: () => void }) => {
   const qc = useQueryClient();
   const isEditing = !!product;
-  const draft = !isEditing ? loadDraft() : null;
+  const draft = loadDraft();
   const [hasResumedDraft, setHasResumedDraft] = useState(!!draft && !isEditing);
 
   const discardDraft = () => {
