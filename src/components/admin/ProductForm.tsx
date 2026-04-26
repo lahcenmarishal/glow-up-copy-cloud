@@ -249,6 +249,18 @@ const ProductForm = ({ product, onClose }: { product: any | null; onClose: () =>
       </button>
       <h1 className="mb-6 font-display text-2xl font-bold text-foreground">{isEditing ? "Modifier le produit" : "Nouveau produit"}</h1>
 
+      {hasResumedDraft && (
+        <div className="mb-6 flex items-start justify-between gap-4 rounded-sm border border-accent/40 bg-accent/10 p-4">
+          <div>
+            <p className="text-sm font-semibold text-foreground">Brouillon repris</p>
+            <p className="mt-0.5 text-xs text-muted-foreground">Votre travail en cours a été restauré automatiquement. Continuez la saisie ou supprimez le brouillon pour repartir de zéro.</p>
+          </div>
+          <button onClick={discardDraft} className="shrink-0 rounded-sm border border-border bg-background px-3 py-2 text-xs font-medium text-muted-foreground hover:text-destructive">
+            Supprimer le brouillon
+          </button>
+        </div>
+      )}
+
       <div className="space-y-6">
         <div className="grid gap-4 md:grid-cols-2">
           <div>
