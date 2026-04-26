@@ -35,6 +35,13 @@ const ProductForm = ({ product, onClose }: { product: any | null; onClose: () =>
   const qc = useQueryClient();
   const isEditing = !!product;
   const draft = !isEditing ? loadDraft() : null;
+  const [hasResumedDraft, setHasResumedDraft] = useState(!!draft && !isEditing);
+
+  const discardDraft = () => {
+    localStorage.removeItem(DRAFT_KEY);
+    setHasResumedDraft(false);
+    onClose();
+  };
 
   const [name, setName] = useState(product?.name || draft?.name || "");
   const [category, setCategory] = useState(product?.category || draft?.category || "Cardio");
