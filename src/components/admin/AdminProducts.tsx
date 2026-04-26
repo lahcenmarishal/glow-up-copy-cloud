@@ -1,15 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Plus, Pencil, Trash2, Eye, EyeOff, Search } from "lucide-react";
 import { toast } from "sonner";
 import ProductForm from "./ProductForm";
 
+const DRAFT_KEY = "product-form-draft";
+
+const hasDraft = () => {
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    if (!raw) return false;
+    const d = JSON.parse(raw);
+    // Consider non-empty if any meaningful field is filled
+    return !!(d?.name?.trim() || d?.shortDesc?.trim() || d?.description?.trim() || d?.imageUrl || (d?.specs?.length) || (d?.features?.length) || (d?.warrantyItems?.length));
+  } catch { return false; }
+};
+
 const AdminProducts = () => {
   const qc = useQueryClient();
   const [editingProduct, setEditingProduct] = useState<any | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Auto-resume an in-progress new-product draft when returning to admin
+  useEffect(() => {
+    if (hasDraft()) {
+      setEditingProduct(null);
+      setShowForm(true);
+    }
+  }, []);
 
   const { data: products, isLoading } = useQuery({
     queryKey: ["admin-products"],
