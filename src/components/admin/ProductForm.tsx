@@ -21,11 +21,12 @@ const subcategories: Record<string, string[]> = {
   Fonctionnel: ["HIIT Cardio", "Cages & Rigs"],
 };
 
-const DRAFT_KEY = "product-form-draft";
+const DRAFT_KEY_NEW = "product-form-draft";
+const draftKeyFor = (productId?: string) => productId ? `product-form-draft:${productId}` : DRAFT_KEY_NEW;
 
-const loadDraft = () => {
+const loadDraft = (productId?: string) => {
   try {
-    const raw = localStorage.getItem(DRAFT_KEY);
+    const raw = localStorage.getItem(draftKeyFor(productId));
     if (raw) return JSON.parse(raw);
   } catch {}
   return null;
@@ -34,8 +35,9 @@ const loadDraft = () => {
 const ProductForm = ({ product, onClose }: { product: any | null; onClose: () => void }) => {
   const qc = useQueryClient();
   const isEditing = !!product;
-  const draft = !isEditing ? loadDraft() : null;
-  const [hasResumedDraft, setHasResumedDraft] = useState(!!draft && !isEditing);
+  const DRAFT_KEY = draftKeyFor(product?.id);
+  const draft = loadDraft(product?.id);
+  const [hasResumedDraft, setHasResumedDraft] = useState(!!draft);
 
   const discardDraft = () => {
     localStorage.removeItem(DRAFT_KEY);
