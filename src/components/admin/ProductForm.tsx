@@ -45,14 +45,14 @@ const ProductForm = ({ product, onClose }: { product: any | null; onClose: () =>
     onClose();
   };
 
-  const [name, setName] = useState(product?.name || draft?.name || "");
-  const [category, setCategory] = useState(product?.category || draft?.category || "Cardio");
-  const [usageType, setUsageType] = useState(product?.usage_type || draft?.usageType || "both");
-  const [subcategory, setSubcategory] = useState(product?.subcategory || draft?.subcategory || "");
-  const [shortDesc, setShortDesc] = useState(product?.short_description || draft?.shortDesc || "");
-  const [description, setDescription] = useState(product?.description || draft?.description || "");
+  const [name, setName] = useState(draft?.name ?? product?.name ?? "");
+  const [category, setCategory] = useState(draft?.category ?? product?.category ?? "Cardio");
+  const [usageType, setUsageType] = useState(draft?.usageType ?? product?.usage_type ?? "both");
+  const [subcategory, setSubcategory] = useState(draft?.subcategory ?? product?.subcategory ?? "");
+  const [shortDesc, setShortDesc] = useState(draft?.shortDesc ?? product?.short_description ?? "");
+  const [description, setDescription] = useState(draft?.description ?? product?.description ?? "");
   const [warrantyItems, setWarrantyItems] = useState<WarrantyItem[]>(() => {
-    if (draft?.warrantyItems && !isEditing) return draft.warrantyItems;
+    if (draft?.warrantyItems) return draft.warrantyItems;
     const w = product?.warranty;
     if (!w) return [];
     try {
@@ -69,22 +69,21 @@ const ProductForm = ({ product, onClose }: { product: any | null; onClose: () =>
       return { component: parts[0]?.trim() || "", duration: parts.slice(1).join(":").trim() || line.trim() };
     });
   });
-  const [specs, setSpecs] = useState<Spec[]>((product?.specs as Spec[]) || draft?.specs || []);
-  const [features, setFeatures] = useState<string[]>((product?.features as string[]) || draft?.features || []);
-  const [imageUrl, setImageUrl] = useState(product?.image_url || draft?.imageUrl || "");
-  const [hoverImageUrl, setHoverImageUrl] = useState(product?.hover_image_url || draft?.hoverImageUrl || "");
+  const [specs, setSpecs] = useState<Spec[]>(draft?.specs ?? (product?.specs as Spec[]) ?? []);
+  const [features, setFeatures] = useState<string[]>(draft?.features ?? (product?.features as string[]) ?? []);
+  const [imageUrl, setImageUrl] = useState(draft?.imageUrl ?? product?.image_url ?? "");
+  const [hoverImageUrl, setHoverImageUrl] = useState(draft?.hoverImageUrl ?? product?.hover_image_url ?? "");
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
-  const [isTrending, setIsTrending] = useState(product?.is_trending || draft?.isTrending || false);
-  const [isPublished, setIsPublished] = useState(product?.is_published ?? draft?.isPublished ?? false);
-  const [sortOrder, setSortOrder] = useState(product?.sort_order || draft?.sortOrder || 0);
-  const [rangeCode, setRangeCode] = useState<string>(product?.range_code || draft?.rangeCode || "");
+  const [isTrending, setIsTrending] = useState(draft?.isTrending ?? product?.is_trending ?? false);
+  const [isPublished, setIsPublished] = useState(draft?.isPublished ?? product?.is_published ?? false);
+  const [sortOrder, setSortOrder] = useState(draft?.sortOrder ?? product?.sort_order ?? 0);
+  const [rangeCode, setRangeCode] = useState<string>(draft?.rangeCode ?? product?.range_code ?? "");
   const [availableRanges, setAvailableRanges] = useState<Array<{ code: string; usage_type: string }>>([]);
   const [saving, setSaving] = useState(false);
   const [loadingGallery, setLoadingGallery] = useState(isEditing);
 
-  // Auto-save draft for new products
+  // Auto-save draft (works for both new and edited products; per-product key when editing)
   useEffect(() => {
-    if (isEditing) return;
     const timer = setTimeout(() => {
       localStorage.setItem(DRAFT_KEY, JSON.stringify({
         name, category, usageType, subcategory, shortDesc, description,
@@ -93,7 +92,7 @@ const ProductForm = ({ product, onClose }: { product: any | null; onClose: () =>
       }));
     }, 500);
     return () => clearTimeout(timer);
-  }, [isEditing, name, category, usageType, subcategory, shortDesc, description, warrantyItems, specs, features, imageUrl, hoverImageUrl, isTrending, isPublished, sortOrder, rangeCode]);
+  }, [DRAFT_KEY, name, category, usageType, subcategory, shortDesc, description, warrantyItems, specs, features, imageUrl, hoverImageUrl, isTrending, isPublished, sortOrder, rangeCode]);
 
   const mainImageRef = useRef<HTMLInputElement>(null);
   const hoverImageRef = useRef<HTMLInputElement>(null);
