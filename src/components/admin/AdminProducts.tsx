@@ -126,7 +126,7 @@ const AdminProducts = () => {
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Rechercher un produit par nom, catégorie..."
+          placeholder="Rechercher par nom, catégorie, sous-catégorie ou gamme..."
           className="w-full rounded-sm border border-border bg-background pl-10 pr-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent"
         />
       </div>
