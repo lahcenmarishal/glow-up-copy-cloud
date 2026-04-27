@@ -108,7 +108,7 @@ const AdminProducts = () => {
   const filtered = (products || []).filter((p) => {
     if (!searchQuery.trim()) return true;
     const q = searchQuery.toLowerCase();
-    return p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q) || (p.subcategory || "").toLowerCase().includes(q);
+    return p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q) || (p.subcategory || "").toLowerCase().includes(q) || (p.range_code || "").toLowerCase().includes(q);
   });
 
   return (
