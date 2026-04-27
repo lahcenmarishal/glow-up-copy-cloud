@@ -44,6 +44,39 @@ const AdminProducts = () => {
     },
   });
 
+  const { data: ranges } = useQuery({
+    queryKey: ["admin-product-ranges"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("product_ranges").select("code,label");
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const rangeLabel = (code?: string | null) => {
+    if (!code) return null;
+    const r = ranges?.find((x: any) => x.code === code);
+    return r?.label ? `${code} — ${r.label}` : code;
+  };
+
+  // Palette of stable colors per range code
+  const rangeColorClass = (code?: string | null) => {
+    if (!code) return "";
+    const palette = [
+      "bg-blue-500/15 text-blue-400 border-blue-500/30",
+      "bg-purple-500/15 text-purple-400 border-purple-500/30",
+      "bg-amber-500/15 text-amber-400 border-amber-500/30",
+      "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
+      "bg-pink-500/15 text-pink-400 border-pink-500/30",
+      "bg-cyan-500/15 text-cyan-400 border-cyan-500/30",
+      "bg-orange-500/15 text-orange-400 border-orange-500/30",
+      "bg-indigo-500/15 text-indigo-400 border-indigo-500/30",
+    ];
+    let h = 0;
+    for (let i = 0; i < code.length; i++) h = (h * 31 + code.charCodeAt(i)) >>> 0;
+    return palette[h % palette.length];
+  };
+
   const togglePublish = useMutation({
     mutationFn: async ({ id, is_published }: { id: string; is_published: boolean }) => {
       const { error } = await supabase.from("products").update({ is_published }).eq("id", id);
