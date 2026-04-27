@@ -146,8 +146,17 @@ const AdminProducts = () => {
               )}
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm font-semibold text-foreground truncate">{p.name}</h3>
-                <p className="text-xs text-muted-foreground">{p.category}</p>
+                <p className="text-xs text-muted-foreground">{p.category}{p.subcategory ? ` › ${p.subcategory}` : ""}</p>
               </div>
+              {p.range_code ? (
+                <span className={`hidden md:inline-flex items-center rounded-sm border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${rangeColorClass(p.range_code)}`} title={rangeLabel(p.range_code) || ""}>
+                  {p.range_code}
+                </span>
+              ) : (
+                <span className="hidden md:inline-flex items-center rounded-sm border border-dashed border-border px-2 py-0.5 text-[10px] font-medium uppercase text-muted-foreground">
+                  Sans gamme
+                </span>
+              )}
               <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase ${p.is_published ? "bg-green-500/20 text-green-400" : "bg-muted text-muted-foreground"}`}>
                 {p.is_published ? "Publié" : "Brouillon"}
               </span>
