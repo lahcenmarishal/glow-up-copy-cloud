@@ -36,7 +36,8 @@ const ProductGrid = ({ defaultCategory, defaultSubcategory, defaultSubcategorySl
     queryFn: async () => {
       if (!defaultUsageType || !defaultCategory || !defaultSubcategorySlug) return [];
       const cat = defaultCategory.toLowerCase();
-      let q = supabase.from("product_ranges").select("*").eq("is_active", true).eq("category", cat).eq("subcategory", defaultSubcategorySlug);
+      const subSlug = defaultSubcategorySlug.toLowerCase();
+      let q = supabase.from("product_ranges").select("*").eq("is_active", true).eq("category", cat).eq("subcategory", subSlug);
       if (defaultUsageType !== "both") q = q.eq("usage_type", defaultUsageType);
       const { data, error } = await q.order("sort_order");
       if (error) throw error;
