@@ -44,6 +44,39 @@ const AdminProducts = () => {
     },
   });
 
+  const { data: ranges } = useQuery({
+    queryKey: ["admin-product-ranges"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("product_ranges").select("code,label");
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const rangeLabel = (code?: string | null) => {
+    if (!code) return null;
+    const r = ranges?.find((x: any) => x.code === code);
+    return r?.label ? `${code} — ${r.label}` : code;
+  };
+
+  // Palette of stable colors per range code
+  const rangeColorClass = (code?: string | null) => {
+    if (!code) return "";
+    const palette = [
+      "bg-blue-500/15 text-blue-400 border-blue-500/30",
+      "bg-purple-500/15 text-purple-400 border-purple-500/30",
+      "bg-amber-500/15 text-amber-400 border-amber-500/30",
+      "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
+      "bg-pink-500/15 text-pink-400 border-pink-500/30",
+      "bg-cyan-500/15 text-cyan-400 border-cyan-500/30",
+      "bg-orange-500/15 text-orange-400 border-orange-500/30",
+      "bg-indigo-500/15 text-indigo-400 border-indigo-500/30",
+    ];
+    let h = 0;
+    for (let i = 0; i < code.length; i++) h = (h * 31 + code.charCodeAt(i)) >>> 0;
+    return palette[h % palette.length];
+  };
+
   const togglePublish = useMutation({
     mutationFn: async ({ id, is_published }: { id: string; is_published: boolean }) => {
       const { error } = await supabase.from("products").update({ is_published }).eq("id", id);
@@ -75,7 +108,7 @@ const AdminProducts = () => {
   const filtered = (products || []).filter((p) => {
     if (!searchQuery.trim()) return true;
     const q = searchQuery.toLowerCase();
-    return p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q) || (p.subcategory || "").toLowerCase().includes(q);
+    return p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q) || (p.subcategory || "").toLowerCase().includes(q) || (p.range_code || "").toLowerCase().includes(q);
   });
 
   return (
@@ -93,7 +126,7 @@ const AdminProducts = () => {
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Rechercher un produit par nom, catégorie..."
+          placeholder="Rechercher par nom, catégorie, sous-catégorie ou gamme..."
           className="w-full rounded-sm border border-border bg-background pl-10 pr-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent"
         />
       </div>
@@ -113,8 +146,17 @@ const AdminProducts = () => {
               )}
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm font-semibold text-foreground truncate">{p.name}</h3>
-                <p className="text-xs text-muted-foreground">{p.category}</p>
+                <p className="text-xs text-muted-foreground">{p.category}{p.subcategory ? ` › ${p.subcategory}` : ""}</p>
               </div>
+              {p.range_code ? (
+                <span className={`hidden md:inline-flex items-center rounded-sm border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${rangeColorClass(p.range_code)}`} title={rangeLabel(p.range_code) || ""}>
+                  {p.range_code}
+                </span>
+              ) : (
+                <span className="hidden md:inline-flex items-center rounded-sm border border-dashed border-border px-2 py-0.5 text-[10px] font-medium uppercase text-muted-foreground">
+                  Sans gamme
+                </span>
+              )}
               <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase ${p.is_published ? "bg-green-500/20 text-green-400" : "bg-muted text-muted-foreground"}`}>
                 {p.is_published ? "Publié" : "Brouillon"}
               </span>
