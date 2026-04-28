@@ -61,7 +61,7 @@ const CategoryCardsSection = () => {
                         key={sc.slug}
                         href={`/${slug}/${sc.slug}`}
                         onClick={(e) => e.stopPropagation()}
-                        className="inline-block text-[10px] font-semibold text-background border-b border-background/60 pb-0.5 transition-colors hover:border-background sm:text-sm"
+                        className="inline-block text-[10px] font-semibold text-background border-b border-background/60 pb-0.5 transition-all duration-150 hover:border-background sm:text-sm active:scale-95 active:text-accent active:border-accent active:bg-background/10 active:px-2 active:rounded-sm"
                       >
                         {sc.label}
                       </a>
