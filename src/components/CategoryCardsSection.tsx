@@ -81,10 +81,14 @@ const CategoryCardsSection = () => {
     pb-1
     transition-all
     duration-200
+    active:scale-95
+    active:bg-background/10
+    active:px-2
+    active:rounded-sm
     ${
       isRed
-        ? "text-accent border-accent/70 group-hover:border-accent"
-        : "text-background border-background/70 group-hover:border-background"
+        ? "text-accent border-accent/70 group-hover:border-accent active:border-accent"
+        : "text-background border-background/70 group-hover:border-background active:text-accent active:border-accent"
     }
   `}
 >
