@@ -5,6 +5,7 @@ import HeroCarousel from "@/components/HeroCarousel";
 import CategoryCardsSection from "@/components/CategoryCardsSection";
 import TrendingProducts from "@/components/TrendingProducts";
 import AboutImpulseSection from "@/components/AboutImpulseSection";
+import WorldPresenceSection from "@/components/WorldPresenceSection";
 import ContactSection from "@/components/ContactSection";
 import FaqSection from "@/components/FaqSection";
 import Footer from "@/components/Footer";
