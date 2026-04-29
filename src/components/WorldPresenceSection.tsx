@@ -1,40 +1,45 @@
-import { useEffect } from "react";
-import { MapContainer, TileLayer, CircleMarker, Tooltip } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { Plus, Minus, Maximize2 } from "lucide-react";
 
-const countries: { name: string; coords: [number, number] }[] = [
-  { name: "France", coords: [46.6, 2.5] },
-  { name: "Italie", coords: [42.8, 12.6] },
-  { name: "Russie", coords: [61.5, 105.3] },
-  { name: "Allemagne", coords: [51.2, 10.4] },
-  { name: "Espagne", coords: [40.4, -3.7] },
-  { name: "Grèce", coords: [39.1, 22.0] },
-  { name: "Pays-Bas", coords: [52.1, 5.3] },
-  { name: "Belgique", coords: [50.5, 4.5] },
-  { name: "Mexique", coords: [23.6, -102.5] },
-  { name: "États-Unis", coords: [39.8, -98.6] },
-  { name: "Vietnam", coords: [16.0, 107.8] },
-  { name: "Inde", coords: [22.0, 79.0] },
-  { name: "Malaisie", coords: [4.2, 102.0] },
-  { name: "Indonésie", coords: [-2.5, 117.0] },
-  { name: "Brésil", coords: [-14.2, -51.9] },
-  { name: "Ukraine", coords: [48.4, 31.2] },
-  { name: "Irlande", coords: [53.4, -8.2] },
-  { name: "Turquie", coords: [38.9, 35.2] },
-  { name: "Iran", coords: [32.4, 53.7] },
-  { name: "Kazakhstan", coords: [48.0, 66.9] },
-  { name: "Australie", coords: [-25.3, 133.8] },
-  { name: "Nouvelle-Zélande", coords: [-41.0, 174.0] },
-  { name: "Suisse", coords: [46.8, 8.2] },
-  { name: "Afrique du Sud", coords: [-30.6, 22.9] },
-  { name: "Maroc", coords: [31.8, -7.1] },
+// Equirectangular projection: lat/lng -> percentages on the map image
+const project = (lat: number, lng: number) => ({
+  left: ((lng + 180) / 360) * 100,
+  top: ((90 - lat) / 180) * 100,
+});
+
+const countries: { name: string; lat: number; lng: number }[] = [
+  { name: "France", lat: 46.6, lng: 2.5 },
+  { name: "Italie", lat: 42.8, lng: 12.6 },
+  { name: "Russie", lat: 61.5, lng: 90 },
+  { name: "Allemagne", lat: 51.2, lng: 10.4 },
+  { name: "Espagne", lat: 40.4, lng: -3.7 },
+  { name: "Grèce", lat: 39.1, lng: 22.0 },
+  { name: "Pays-Bas", lat: 52.1, lng: 5.3 },
+  { name: "Belgique", lat: 50.5, lng: 4.5 },
+  { name: "Mexique", lat: 23.6, lng: -102.5 },
+  { name: "États-Unis", lat: 39.8, lng: -98.6 },
+  { name: "Vietnam", lat: 16.0, lng: 107.8 },
+  { name: "Inde", lat: 22.0, lng: 79.0 },
+  { name: "Malaisie", lat: 4.2, lng: 102.0 },
+  { name: "Indonésie", lat: -2.5, lng: 117.0 },
+  { name: "Brésil", lat: -14.2, lng: -51.9 },
+  { name: "Ukraine", lat: 48.4, lng: 31.2 },
+  { name: "Irlande", lat: 53.4, lng: -8.2 },
+  { name: "Turquie", lat: 38.9, lng: 35.2 },
+  { name: "Iran", lat: 32.4, lng: 53.7 },
+  { name: "Kazakhstan", lat: 48.0, lng: 66.9 },
+  { name: "Australie", lat: -25.3, lng: 133.8 },
+  { name: "Nouvelle-Zélande", lat: -41.0, lng: 174.0 },
+  { name: "Suisse", lat: 46.8, lng: 8.2 },
+  { name: "Afrique du Sud", lat: -30.6, lng: 22.9 },
+  { name: "Maroc", lat: 31.8, lng: -7.1 },
 ];
 
-const WorldPresenceSection = () => {
-  useEffect(() => {
-    // Ensure Leaflet's CSS is applied; container needs a fixed height
-  }, []);
+// Public domain equirectangular world map (Wikimedia)
+const WORLD_MAP_SRC =
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Equirectangular_projection_SW.jpg/1280px-Equirectangular_projection_SW.jpg";
 
+const WorldPresenceSection = () => {
   return (
     <section className="bg-foreground py-16 lg:py-24">
       <div className="container mx-auto px-4">
@@ -48,41 +53,82 @@ const WorldPresenceSection = () => {
           </p>
         </div>
 
-        <div className="relative rounded-lg overflow-hidden border border-background/10 shadow-2xl">
-          <MapContainer
-            center={[25, 15]}
-            zoom={2}
-            scrollWheelZoom={false}
-            style={{ height: "560px", width: "100%", background: "#0a0a0a" }}
-            worldCopyJump
+        <div className="relative rounded-lg overflow-hidden border border-background/10 shadow-2xl bg-[#0a1628]">
+          <TransformWrapper
+            initialScale={1}
+            minScale={1}
+            maxScale={6}
+            wheel={{ step: 0.2 }}
+            doubleClick={{ step: 0.7 }}
+            panning={{ velocityDisabled: true }}
           >
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-              url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-            />
-            {countries.map((c) => (
-              <CircleMarker
-                key={c.name}
-                center={c.coords}
-                radius={7}
-                pathOptions={{
-                  color: "#16a34a",
-                  fillColor: "#22c55e",
-                  fillOpacity: 0.9,
-                  weight: 2,
-                }}
-              >
-                <Tooltip direction="top" offset={[0, -6]} opacity={1}>
-                  <span className="font-semibold">{c.name}</span>
-                </Tooltip>
-              </CircleMarker>
-            ))}
-          </MapContainer>
+            {({ zoomIn, zoomOut, resetTransform }) => (
+              <>
+                <div className="absolute top-3 right-3 z-10 flex flex-col gap-2">
+                  <button
+                    aria-label="Zoom in"
+                    onClick={() => zoomIn()}
+                    className="h-9 w-9 inline-flex items-center justify-center rounded-md bg-background text-foreground hover:bg-accent hover:text-accent-foreground transition-colors shadow-md"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </button>
+                  <button
+                    aria-label="Zoom out"
+                    onClick={() => zoomOut()}
+                    className="h-9 w-9 inline-flex items-center justify-center rounded-md bg-background text-foreground hover:bg-accent hover:text-accent-foreground transition-colors shadow-md"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </button>
+                  <button
+                    aria-label="Reset"
+                    onClick={() => resetTransform()}
+                    className="h-9 w-9 inline-flex items-center justify-center rounded-md bg-background text-foreground hover:bg-accent hover:text-accent-foreground transition-colors shadow-md"
+                  >
+                    <Maximize2 className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <TransformComponent
+                  wrapperStyle={{ width: "100%", height: "auto" }}
+                  contentStyle={{ width: "100%" }}
+                >
+                  <div className="relative w-full" style={{ aspectRatio: "2 / 1" }}>
+                    <img
+                      src={WORLD_MAP_SRC}
+                      alt="Carte du monde - présence Impulse"
+                      className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+                      draggable={false}
+                      loading="lazy"
+                    />
+                    {countries.map((c) => {
+                      const pos = project(c.lat, c.lng);
+                      return (
+                        <div
+                          key={c.name}
+                          className="absolute group"
+                          style={{
+                            left: `${pos.left}%`,
+                            top: `${pos.top}%`,
+                            transform: "translate(-50%, -50%)",
+                          }}
+                        >
+                          <span className="block w-3 h-3 rounded-full bg-[#22c55e] border-2 border-white shadow-[0_0_0_2px_rgba(34,197,94,0.4)] animate-pulse" />
+                          <span className="absolute left-1/2 -translate-x-1/2 -top-7 whitespace-nowrap rounded bg-background text-foreground text-[10px] font-semibold px-2 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md">
+                            {c.name}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </TransformComponent>
+              </>
+            )}
+          </TransformWrapper>
         </div>
 
         <div className="flex items-center justify-center gap-3 mt-6 text-background/80 text-sm">
-          <span className="inline-block w-3 h-3 rounded-full bg-[#22c55e] border-2 border-[#16a34a]" />
-          Centres et partenaires Impulse
+          <span className="inline-block w-3 h-3 rounded-full bg-[#22c55e] border-2 border-white" />
+          Centres et partenaires Impulse — utilisez la molette ou les boutons +/− pour zoomer
         </div>
       </div>
     </section>
