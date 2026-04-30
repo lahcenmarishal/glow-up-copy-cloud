@@ -86,10 +86,10 @@ const WorldPresenceSection = () => {
           onClick={() => setActiveMarker(null)}
         >
           <ComposableMap
-            projection="geoEqualEarth"
-            projectionConfig={{ scale: 175, center: [0, 5] }}
+            projection="geoEquirectangular"
+            projectionConfig={{ scale: 145, center: [10, 10] }}
             width={980}
-            height={460}
+            height={500}
             style={{ width: "100%", height: "auto", background: "#000000" }}
           >
             <ZoomableGroup
