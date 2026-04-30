@@ -64,13 +64,17 @@ const WorldPresenceSection = () => {
   return (
     <section className="bg-foreground py-16 lg:py-24">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-10">
+        <div className="flex flex-col items-center text-center mb-10">
+          <img
+            src={impulseLogo}
+            alt="Impulse"
+            className="h-10 md:h-12 w-auto mb-6 object-contain"
+          />
           <h2 className="text-3xl md:text-4xl font-bold text-background uppercase tracking-wide">
-            Présence mondiale Impulse
+            Une présence mondiale
           </h2>
           <p className="text-background/70 mt-3 max-w-2xl mx-auto">
-            Découvrez les pays où la marque Impulse est présente à travers ses
-            centres et partenaires.
+            Dans plus de 100 pays dans le monde
           </p>
         </div>
 
