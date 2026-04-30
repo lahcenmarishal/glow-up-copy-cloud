@@ -1,45 +1,65 @@
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { Plus, Minus, Maximize2 } from "lucide-react";
+import { useRef, useState } from "react";
+import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from "react-simple-maps";
+import { Plus, Minus, Home, Maximize2 } from "lucide-react";
 
-// Equirectangular projection: lat/lng -> percentages on the map image
-const project = (lat: number, lng: number) => ({
-  left: ((lng + 180) / 360) * 100,
-  top: ((90 - lat) / 180) * 100,
-});
+const GEO_URL =
+  "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
-const countries: { name: string; lat: number; lng: number }[] = [
-  { name: "France", lat: 46.6, lng: 2.5 },
-  { name: "Italie", lat: 42.8, lng: 12.6 },
-  { name: "Russie", lat: 61.5, lng: 90 },
-  { name: "Allemagne", lat: 51.2, lng: 10.4 },
-  { name: "Espagne", lat: 40.4, lng: -3.7 },
-  { name: "Grèce", lat: 39.1, lng: 22.0 },
-  { name: "Pays-Bas", lat: 52.1, lng: 5.3 },
-  { name: "Belgique", lat: 50.5, lng: 4.5 },
-  { name: "Mexique", lat: 23.6, lng: -102.5 },
-  { name: "États-Unis", lat: 39.8, lng: -98.6 },
-  { name: "Vietnam", lat: 16.0, lng: 107.8 },
-  { name: "Inde", lat: 22.0, lng: 79.0 },
-  { name: "Malaisie", lat: 4.2, lng: 102.0 },
-  { name: "Indonésie", lat: -2.5, lng: 117.0 },
-  { name: "Brésil", lat: -14.2, lng: -51.9 },
-  { name: "Ukraine", lat: 48.4, lng: 31.2 },
-  { name: "Irlande", lat: 53.4, lng: -8.2 },
-  { name: "Turquie", lat: 38.9, lng: 35.2 },
-  { name: "Iran", lat: 32.4, lng: 53.7 },
-  { name: "Kazakhstan", lat: 48.0, lng: 66.9 },
-  { name: "Australie", lat: -25.3, lng: 133.8 },
-  { name: "Nouvelle-Zélande", lat: -41.0, lng: 174.0 },
-  { name: "Suisse", lat: 46.8, lng: 8.2 },
-  { name: "Afrique du Sud", lat: -30.6, lng: 22.9 },
-  { name: "Maroc", lat: 31.8, lng: -7.1 },
+const countries: { name: string; coords: [number, number] }[] = [
+  { name: "France", coords: [2.5, 46.6] },
+  { name: "Italie", coords: [12.6, 42.8] },
+  { name: "Russie", coords: [90, 61.5] },
+  { name: "Allemagne", coords: [10.4, 51.2] },
+  { name: "Espagne", coords: [-3.7, 40.4] },
+  { name: "Grèce", coords: [22.0, 39.1] },
+  { name: "Pays-Bas", coords: [5.3, 52.1] },
+  { name: "Belgique", coords: [4.5, 50.5] },
+  { name: "Mexique", coords: [-102.5, 23.6] },
+  { name: "États-Unis", coords: [-98.6, 39.8] },
+  { name: "Vietnam", coords: [107.8, 16.0] },
+  { name: "Inde", coords: [79.0, 22.0] },
+  { name: "Malaisie", coords: [102.0, 4.2] },
+  { name: "Indonésie", coords: [117.0, -2.5] },
+  { name: "Brésil", coords: [-51.9, -14.2] },
+  { name: "Ukraine", coords: [31.2, 48.4] },
+  { name: "Irlande", coords: [-8.2, 53.4] },
+  { name: "Turquie", coords: [35.2, 38.9] },
+  { name: "Iran", coords: [53.7, 32.4] },
+  { name: "Kazakhstan", coords: [66.9, 48.0] },
+  { name: "Australie", coords: [133.8, -25.3] },
+  { name: "Nouvelle-Zélande", coords: [174.0, -41.0] },
+  { name: "Suisse", coords: [8.2, 46.8] },
+  { name: "Afrique du Sud", coords: [22.9, -30.6] },
+  { name: "Maroc", coords: [-7.1, 31.8] },
 ];
 
-// Public domain equirectangular world map (Wikimedia)
-const WORLD_MAP_SRC =
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Equirectangular_projection_SW.jpg/1280px-Equirectangular_projection_SW.jpg";
-
 const WorldPresenceSection = () => {
+  const [position, setPosition] = useState<{ coordinates: [number, number]; zoom: number }>({
+    coordinates: [15, 20],
+    zoom: 1,
+  });
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const handleZoomIn = () => {
+    if (position.zoom >= 8) return;
+    setPosition((p) => ({ ...p, zoom: p.zoom * 1.5 }));
+  };
+  const handleZoomOut = () => {
+    if (position.zoom <= 1) return;
+    setPosition((p) => ({ ...p, zoom: p.zoom / 1.5 }));
+  };
+  const handleReset = () => setPosition({ coordinates: [15, 20], zoom: 1 });
+
+  const handleFullscreen = () => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    if (!document.fullscreenElement) {
+      el.requestFullscreen?.();
+    } else {
+      document.exitFullscreen?.();
+    }
+  };
+
   return (
     <section className="bg-foreground py-16 lg:py-24">
       <div className="container mx-auto px-4">
@@ -53,82 +73,104 @@ const WorldPresenceSection = () => {
           </p>
         </div>
 
-        <div className="relative rounded-lg overflow-hidden border border-background/10 shadow-2xl bg-[#0a1628]">
-          <TransformWrapper
-            initialScale={1}
-            minScale={1}
-            maxScale={6}
-            wheel={{ step: 0.2 }}
-            doubleClick={{ step: 0.7 }}
-            panning={{ velocityDisabled: true }}
+        <div
+          ref={wrapperRef}
+          className="relative rounded-lg overflow-hidden border border-background/10 shadow-2xl bg-black"
+        >
+          <ComposableMap
+            projectionConfig={{ scale: 155 }}
+            width={980}
+            height={500}
+            style={{ width: "100%", height: "auto", background: "#000000" }}
           >
-            {({ zoomIn, zoomOut, resetTransform }) => (
-              <>
-                <div className="absolute top-3 right-3 z-10 flex flex-col gap-2">
-                  <button
-                    aria-label="Zoom in"
-                    onClick={() => zoomIn()}
-                    className="h-9 w-9 inline-flex items-center justify-center rounded-md bg-background text-foreground hover:bg-accent hover:text-accent-foreground transition-colors shadow-md"
-                  >
-                    <Plus className="h-4 w-4" />
-                  </button>
-                  <button
-                    aria-label="Zoom out"
-                    onClick={() => zoomOut()}
-                    className="h-9 w-9 inline-flex items-center justify-center rounded-md bg-background text-foreground hover:bg-accent hover:text-accent-foreground transition-colors shadow-md"
-                  >
-                    <Minus className="h-4 w-4" />
-                  </button>
-                  <button
-                    aria-label="Reset"
-                    onClick={() => resetTransform()}
-                    className="h-9 w-9 inline-flex items-center justify-center rounded-md bg-background text-foreground hover:bg-accent hover:text-accent-foreground transition-colors shadow-md"
-                  >
-                    <Maximize2 className="h-4 w-4" />
-                  </button>
-                </div>
-
-                <TransformComponent
-                  wrapperStyle={{ width: "100%", height: "auto" }}
-                  contentStyle={{ width: "100%" }}
-                >
-                  <div className="relative w-full" style={{ aspectRatio: "2 / 1" }}>
-                    <img
-                      src={WORLD_MAP_SRC}
-                      alt="Carte du monde - présence Impulse"
-                      className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
-                      draggable={false}
-                      loading="lazy"
+            <ZoomableGroup
+              zoom={position.zoom}
+              center={position.coordinates}
+              onMoveEnd={(pos) =>
+                setPosition({ coordinates: pos.coordinates as [number, number], zoom: pos.zoom })
+              }
+              maxZoom={8}
+              minZoom={1}
+            >
+              <Geographies geography={GEO_URL}>
+                {({ geographies }) =>
+                  geographies.map((geo) => (
+                    <Geography
+                      key={geo.rsmKey}
+                      geography={geo}
+                      style={{
+                        default: {
+                          fill: "#9ca3af",
+                          stroke: "#ffffff",
+                          strokeWidth: 0.4,
+                          outline: "none",
+                        },
+                        hover: {
+                          fill: "#b5bbc4",
+                          stroke: "#ffffff",
+                          strokeWidth: 0.4,
+                          outline: "none",
+                        },
+                        pressed: {
+                          fill: "#9ca3af",
+                          outline: "none",
+                        },
+                      }}
                     />
-                    {countries.map((c) => {
-                      const pos = project(c.lat, c.lng);
-                      return (
-                        <div
-                          key={c.name}
-                          className="absolute group"
-                          style={{
-                            left: `${pos.left}%`,
-                            top: `${pos.top}%`,
-                            transform: "translate(-50%, -50%)",
-                          }}
-                        >
-                          <span className="block w-3 h-3 rounded-full bg-[#22c55e] border-2 border-white shadow-[0_0_0_2px_rgba(34,197,94,0.4)] animate-pulse" />
-                          <span className="absolute left-1/2 -translate-x-1/2 -top-7 whitespace-nowrap rounded bg-background text-foreground text-[10px] font-semibold px-2 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md">
-                            {c.name}
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </TransformComponent>
-              </>
-            )}
-          </TransformWrapper>
+                  ))
+                }
+              </Geographies>
+
+              {countries.map((c) => (
+                <Marker key={c.name} coordinates={c.coords}>
+                  <circle
+                    r={4 / Math.sqrt(position.zoom)}
+                    fill="hsl(var(--primary))"
+                    stroke="#ffffff"
+                    strokeWidth={1 / Math.sqrt(position.zoom)}
+                  />
+                  <title>{c.name}</title>
+                </Marker>
+              ))}
+            </ZoomableGroup>
+          </ComposableMap>
         </div>
 
-        <div className="flex items-center justify-center gap-3 mt-6 text-background/80 text-sm">
-          <span className="inline-block w-3 h-3 rounded-full bg-[#22c55e] border-2 border-white" />
-          Centres et partenaires Impulse — utilisez la molette ou les boutons +/− pour zoomer
+        {/* Controls below the map */}
+        <div className="flex items-center justify-center gap-2 mt-4">
+          <button
+            aria-label="Zoom avant"
+            onClick={handleZoomIn}
+            className="h-10 w-10 inline-flex items-center justify-center rounded-md bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors shadow-md"
+          >
+            <Plus className="h-4 w-4" />
+          </button>
+          <button
+            aria-label="Zoom arrière"
+            onClick={handleZoomOut}
+            className="h-10 w-10 inline-flex items-center justify-center rounded-md bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors shadow-md"
+          >
+            <Minus className="h-4 w-4" />
+          </button>
+          <button
+            aria-label="Réinitialiser"
+            onClick={handleReset}
+            className="h-10 w-10 inline-flex items-center justify-center rounded-md bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors shadow-md"
+          >
+            <Home className="h-4 w-4" />
+          </button>
+          <button
+            aria-label="Plein écran"
+            onClick={handleFullscreen}
+            className="h-10 w-10 inline-flex items-center justify-center rounded-md bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors shadow-md"
+          >
+            <Maximize2 className="h-4 w-4" />
+          </button>
+        </div>
+
+        <div className="flex items-center justify-center gap-2 mt-4 text-background/80 text-sm">
+          <span className="inline-block w-3 h-3 rounded-full bg-primary border-2 border-white" />
+          Centres et partenaires Impulse
         </div>
       </div>
     </section>
