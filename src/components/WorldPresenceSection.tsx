@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from "react-simple-maps";
 import { Plus, Minus, Home, Maximize2 } from "lucide-react";
+import impulseLogo from "@/assets/impulse-logo.png";
 
 const GEO_URL =
   "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
