@@ -87,7 +87,7 @@ const WorldPresenceSection = () => {
         >
           <ComposableMap
             projection="geoEqualEarth"
-            projectionConfig={{ scale: 175, center: [0, 15] }}
+            projectionConfig={{ scale: 175, center: [0, 5] }}
             width={980}
             height={460}
             style={{ width: "100%", height: "auto", background: "#000000" }}
