@@ -3,8 +3,9 @@ import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from "re
 import { Plus, Minus, Home, Maximize2 } from "lucide-react";
 import impulseLogo from "@/assets/impulse-logo.png";
 
+// 50m dataset offers more detailed borders (e.g. Morocco/Western Sahara rendered together as a single visible landmass)
 const GEO_URL =
-  "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+  "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json";
 
 const countries: { name: string; coords: [number, number] }[] = [
   { name: "France", coords: [2.5, 46.6] },
@@ -36,9 +37,10 @@ const countries: { name: string; coords: [number, number] }[] = [
 
 const WorldPresenceSection = () => {
   const [position, setPosition] = useState<{ coordinates: [number, number]; zoom: number }>({
-    coordinates: [15, 20],
+    coordinates: [15, 25],
     zoom: 1,
   });
+  const [activeMarker, setActiveMarker] = useState<string | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const handleZoomIn = () => {
@@ -49,7 +51,7 @@ const WorldPresenceSection = () => {
     if (position.zoom <= 1) return;
     setPosition((p) => ({ ...p, zoom: p.zoom / 1.5 }));
   };
-  const handleReset = () => setPosition({ coordinates: [15, 20], zoom: 1 });
+  const handleReset = () => setPosition({ coordinates: [15, 25], zoom: 1 });
 
   const handleFullscreen = () => {
     const el = wrapperRef.current;
@@ -81,11 +83,13 @@ const WorldPresenceSection = () => {
         <div
           ref={wrapperRef}
           className="relative rounded-lg overflow-hidden border border-background/10 shadow-2xl bg-black"
+          onClick={() => setActiveMarker(null)}
         >
           <ComposableMap
-            projectionConfig={{ scale: 155 }}
+            projection="geoEqualEarth"
+            projectionConfig={{ scale: 175, center: [0, 15] }}
             width={980}
-            height={500}
+            height={460}
             style={{ width: "100%", height: "auto", background: "#000000" }}
           >
             <ZoomableGroup
@@ -99,44 +103,91 @@ const WorldPresenceSection = () => {
             >
               <Geographies geography={GEO_URL}>
                 {({ geographies }) =>
-                  geographies.map((geo) => (
-                    <Geography
-                      key={geo.rsmKey}
-                      geography={geo}
-                      style={{
-                        default: {
-                          fill: "#9ca3af",
-                          stroke: "#ffffff",
-                          strokeWidth: 0.4,
-                          outline: "none",
-                        },
-                        hover: {
-                          fill: "#b5bbc4",
-                          stroke: "#ffffff",
-                          strokeWidth: 0.4,
-                          outline: "none",
-                        },
-                        pressed: {
-                          fill: "#9ca3af",
-                          outline: "none",
-                        },
-                      }}
-                    />
-                  ))
+                  geographies
+                    // Hide Antarctica
+                    .filter((geo) => geo.properties.name !== "Antarctica")
+                    .map((geo) => (
+                      <Geography
+                        key={geo.rsmKey}
+                        geography={geo}
+                        style={{
+                          default: {
+                            fill: "#9ca3af",
+                            stroke: "#ffffff",
+                            strokeWidth: 0.4,
+                            outline: "none",
+                          },
+                          hover: {
+                            fill: "#b5bbc4",
+                            stroke: "#ffffff",
+                            strokeWidth: 0.4,
+                            outline: "none",
+                          },
+                          pressed: {
+                            fill: "#9ca3af",
+                            outline: "none",
+                          },
+                        }}
+                      />
+                    ))
                 }
               </Geographies>
 
-              {countries.map((c) => (
-                <Marker key={c.name} coordinates={c.coords}>
-                  <circle
-                    r={5 / Math.sqrt(position.zoom)}
-                    fill="#dc2626"
-                    stroke="#ffffff"
-                    strokeWidth={1.2 / Math.sqrt(position.zoom)}
-                  />
-                  <title>{c.name}</title>
-                </Marker>
-              ))}
+              {countries.map((c) => {
+                const isActive = activeMarker === c.name;
+                return (
+                  <Marker
+                    key={c.name}
+                    coordinates={c.coords}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveMarker(isActive ? null : c.name);
+                    }}
+                    style={{
+                      default: { cursor: "pointer" },
+                      hover: { cursor: "pointer" },
+                      pressed: { cursor: "pointer" },
+                    }}
+                  >
+                    <circle
+                      r={5 / Math.sqrt(position.zoom)}
+                      fill="#dc2626"
+                      stroke="#ffffff"
+                      strokeWidth={1.2 / Math.sqrt(position.zoom)}
+                      onMouseEnter={() => setActiveMarker(c.name)}
+                      onMouseLeave={() => setActiveMarker((prev) => (prev === c.name ? null : prev))}
+                    />
+                    {isActive && (
+                      <g style={{ pointerEvents: "none" }}>
+                        <rect
+                          x={-((c.name.length * 4.2) / 2) - 6}
+                          y={-22 / Math.sqrt(position.zoom)}
+                          width={c.name.length * 4.2 + 12}
+                          height={14}
+                          rx={3}
+                          fill="#000000"
+                          opacity={0.85}
+                          transform={`scale(${1 / Math.sqrt(position.zoom)})`}
+                        />
+                        <text
+                          textAnchor="middle"
+                          y={-12}
+                          style={{
+                            fontFamily: "system-ui, sans-serif",
+                            fontSize: 10,
+                            fill: "#ffffff",
+                            fontWeight: 600,
+                          }}
+                          transform={`scale(${1 / Math.sqrt(position.zoom)})`}
+                        >
+                          {c.name}
+                        </text>
+                      </g>
+                    )}
+                    <title>{c.name}</title>
+                  </Marker>
+                );
+              })}
             </ZoomableGroup>
           </ComposableMap>
         </div>
