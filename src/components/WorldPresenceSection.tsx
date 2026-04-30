@@ -169,7 +169,7 @@ const WorldPresenceSection = () => {
         </div>
 
         <div className="flex items-center justify-center gap-2 mt-4 text-background/80 text-sm">
-          <span className="inline-block w-3 h-3 rounded-full bg-primary border-2 border-white" />
+          <span className="inline-block w-3 h-3 rounded-full border-2 border-white" style={{ backgroundColor: "#dc2626" }} />
           Centres et partenaires Impulse
         </div>
       </div>
