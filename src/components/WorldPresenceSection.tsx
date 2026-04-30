@@ -124,10 +124,10 @@ const WorldPresenceSection = () => {
               {countries.map((c) => (
                 <Marker key={c.name} coordinates={c.coords}>
                   <circle
-                    r={4 / Math.sqrt(position.zoom)}
-                    fill="hsl(var(--primary))"
+                    r={5 / Math.sqrt(position.zoom)}
+                    fill="#dc2626"
                     stroke="#ffffff"
-                    strokeWidth={1 / Math.sqrt(position.zoom)}
+                    strokeWidth={1.2 / Math.sqrt(position.zoom)}
                   />
                   <title>{c.name}</title>
                 </Marker>
