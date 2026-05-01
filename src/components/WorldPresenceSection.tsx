@@ -101,9 +101,8 @@ const WorldPresenceSection = () => {
               maxZoom={8}
               minZoom={1}
               filterZoomEvent={(evt: any) => {
-                // Disable wheel zoom and touch gestures (pinch/drag).
-                // Only allow programmatic zoom via the buttons below.
-                if (evt.type === "wheel") return false;
+                // Disable touch gestures (pinch/drag) only on mobile/touch devices.
+                // Desktop wheel + drag remain functional.
                 if (typeof evt.type === "string" && evt.type.startsWith("touch")) return false;
                 if (evt.pointerType === "touch") return false;
                 return true;
