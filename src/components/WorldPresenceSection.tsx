@@ -101,10 +101,11 @@ const WorldPresenceSection = () => {
               maxZoom={8}
               minZoom={1}
               filterZoomEvent={(evt: any) => {
-                // Disable touch gestures (pinch/drag) only on mobile/touch devices.
-                // Desktop wheel + drag remain functional.
-                if (typeof evt.type === "string" && evt.type.startsWith("touch")) return false;
-                if (evt.pointerType === "touch") return false;
+                // On mobile: block pinch-to-zoom (multi-touch) but allow single-finger pan.
+                // Desktop: keep wheel zoom + drag fully functional.
+                if (evt.type === "touchstart" || evt.type === "touchmove") {
+                  if (evt.touches && evt.touches.length > 1) return false;
+                }
                 return true;
               }}
             >
