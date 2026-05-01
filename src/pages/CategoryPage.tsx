@@ -13,12 +13,13 @@ const CategoryPage = ({ usageType }: Props) => {
   const { category } = useParams();
 
   const { data: cat, isLoading: catLoading } = useQuery({
-    queryKey: ["equipment-category", category],
+    queryKey: ["equipment-category", category, usageType],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("equipment_categories")
         .select("*")
         .eq("slug", category!)
+        .eq("usage_type", usageType)
         .eq("is_active", true)
         .maybeSingle();
       if (error) throw error;
@@ -28,12 +29,13 @@ const CategoryPage = ({ usageType }: Props) => {
   });
 
   const { data: subcategories } = useQuery({
-    queryKey: ["equipment-subcategories", category],
+    queryKey: ["equipment-subcategories", category, usageType],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("equipment_subcategories")
         .select("*")
         .eq("category_slug", category!)
+        .eq("usage_type", usageType)
         .eq("is_active", true)
         .order("sort_order");
       if (error) throw error;
