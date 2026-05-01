@@ -238,6 +238,7 @@ export type Database = {
           sort_order: number
           title: string
           updated_at: string
+          usage_type: string
         }
         Insert: {
           created_at?: string
@@ -249,6 +250,7 @@ export type Database = {
           sort_order?: number
           title: string
           updated_at?: string
+          usage_type?: string
         }
         Update: {
           created_at?: string
@@ -260,6 +262,7 @@ export type Database = {
           sort_order?: number
           title?: string
           updated_at?: string
+          usage_type?: string
         }
         Relationships: []
       }
@@ -275,6 +278,7 @@ export type Database = {
           sort_order: number
           title: string
           updated_at: string
+          usage_type: string
         }
         Insert: {
           category_slug: string
@@ -287,6 +291,7 @@ export type Database = {
           sort_order?: number
           title: string
           updated_at?: string
+          usage_type?: string
         }
         Update: {
           category_slug?: string
@@ -299,14 +304,15 @@ export type Database = {
           sort_order?: number
           title?: string
           updated_at?: string
+          usage_type?: string
         }
         Relationships: [
           {
-            foreignKeyName: "equipment_subcategories_category_slug_fkey"
-            columns: ["category_slug"]
+            foreignKeyName: "equipment_subcategories_category_fkey"
+            columns: ["category_slug", "usage_type"]
             isOneToOne: false
             referencedRelation: "equipment_categories"
-            referencedColumns: ["slug"]
+            referencedColumns: ["slug", "usage_type"]
           },
         ]
       }
