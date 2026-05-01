@@ -100,6 +100,14 @@ const WorldPresenceSection = () => {
               }
               maxZoom={8}
               minZoom={1}
+              filterZoomEvent={(evt: any) => {
+                // Disable wheel zoom and touch gestures (pinch/drag).
+                // Only allow programmatic zoom via the buttons below.
+                if (evt.type === "wheel") return false;
+                if (typeof evt.type === "string" && evt.type.startsWith("touch")) return false;
+                if (evt.pointerType === "touch") return false;
+                return true;
+              }}
             >
               <Geographies geography={GEO_URL}>
                 {({ geographies }) =>
