@@ -35,6 +35,7 @@ const AdminCategories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<Record<string, Subcategory[]>>({});
   const [expandedCat, setExpandedCat] = useState<string | null>(null);
+  const [isDirty, setIsDirty] = useState(false);
 
   const { data: catData, isLoading } = useQuery({
     queryKey: ["admin-categories", usageType],
