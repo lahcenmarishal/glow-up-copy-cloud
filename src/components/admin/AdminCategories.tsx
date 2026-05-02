@@ -64,7 +64,10 @@ const AdminCategories = () => {
   });
 
   useEffect(() => {
-    if (catData) setCategories(catData as Category[]);
+    if (catData) {
+      setCategories(catData as Category[]);
+      setIsDirty(false);
+    }
   }, [catData]);
 
   useEffect(() => {
@@ -75,6 +78,7 @@ const AdminCategories = () => {
         grouped[s.category_slug].push(s);
       });
       setSubcategories(grouped);
+      setIsDirty(false);
     }
   }, [subData]);
 
@@ -82,6 +86,7 @@ const AdminCategories = () => {
     const updated = [...categories];
     (updated[i] as any)[field] = value;
     setCategories(updated);
+    setIsDirty(true);
   };
 
   const updateSubField = (catSlug: string, i: number, field: keyof Subcategory, value: any) => {
@@ -90,6 +95,7 @@ const AdminCategories = () => {
     (list[i] as any)[field] = value;
     updated[catSlug] = list;
     setSubcategories(updated);
+    setIsDirty(true);
   };
 
   const handleCatImageUpload = async (i: number, file: File) => {
