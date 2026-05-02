@@ -44,6 +44,7 @@ const AboutImpulseSection = () => {
 
   const intro = getSection("intro");
   const international = getSection("international");
+  const chiffresCles = getSection("chiffres_cles");
   const pillars = getSection("pillars");
   const whyChoose = getSection("why_choose");
   const whyMaroc = getSection("why_maroc");
