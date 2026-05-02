@@ -143,7 +143,7 @@ const AdminCategories = () => {
   };
 
   const saveMutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (targetUsage: UsageType = usageType) => {
       // Update categories (scoped to current usage_type)
       for (const cat of categories) {
         await supabase.from("equipment_categories").upsert({
@@ -154,7 +154,7 @@ const AdminCategories = () => {
           image_url: cat.image_url,
           sort_order: cat.sort_order,
           is_active: cat.is_active,
-          usage_type: usageType,
+          usage_type: targetUsage,
         });
       }
       // Replace subcategories scoped to (category_slug, usage_type)
@@ -163,7 +163,7 @@ const AdminCategories = () => {
           .from("equipment_subcategories")
           .delete()
           .eq("category_slug", cat.slug)
-          .eq("usage_type", usageType);
+          .eq("usage_type", targetUsage);
         const subs = subcategories[cat.slug] || [];
         if (subs.length > 0) {
           await supabase.from("equipment_subcategories").insert(
@@ -175,13 +175,14 @@ const AdminCategories = () => {
               category_slug: cat.slug,
               sort_order: i,
               is_active: s.is_active,
-              usage_type: usageType,
+              usage_type: targetUsage,
             }))
           );
         }
       }
     },
     onSuccess: () => {
+      setIsDirty(false);
       toast.success("Catégories sauvegardées");
       qc.invalidateQueries({ queryKey: ["admin-categories"] });
       qc.invalidateQueries({ queryKey: ["admin-subcategories"] });
@@ -190,6 +191,20 @@ const AdminCategories = () => {
     },
     onError: () => toast.error("Erreur de sauvegarde"),
   });
+
+  const switchUsage = async (next: UsageType) => {
+    if (next === usageType) return;
+    if (isDirty) {
+      try {
+        toast.info("Sauvegarde automatique en cours...");
+        await saveMutation.mutateAsync(usageType);
+      } catch {
+        toast.error("Sauvegarde échouée — changement annulé");
+        return;
+      }
+    }
+    setUsageType(next);
+  };
 
   if (isLoading) return <div className="text-muted-foreground">Chargement...</div>;
 
