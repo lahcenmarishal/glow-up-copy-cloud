@@ -16,6 +16,7 @@ interface Section {
 const sectionLabels: Record<string, string> = {
   intro: "Introduction",
   international: "Marque Internationale",
+  chiffres_cles: "Chiffres Clés (une ligne par puce)",
   pillars: "Piliers d'Excellence (JSON)",
   why_choose: "Pourquoi Choisir Impulse (JSON)",
   why_maroc: "Pourquoi Impulse Maroc",
