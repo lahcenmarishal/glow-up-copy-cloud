@@ -215,8 +215,9 @@ const AdminCategories = () => {
         <div className="flex items-center gap-3">
           <div className="inline-flex rounded-sm border border-border overflow-hidden">
             <button
-              onClick={() => setUsageType("professionnel")}
-              className={`px-4 py-2 text-sm font-semibold transition-colors ${
+              onClick={() => switchUsage("professionnel")}
+              disabled={saveMutation.isPending}
+              className={`px-4 py-2 text-sm font-semibold transition-colors disabled:opacity-50 ${
                 usageType === "professionnel"
                   ? "bg-accent text-accent-foreground"
                   : "bg-card text-foreground hover:bg-muted"
@@ -225,8 +226,9 @@ const AdminCategories = () => {
               Professionnel
             </button>
             <button
-              onClick={() => setUsageType("residentiel")}
-              className={`px-4 py-2 text-sm font-semibold transition-colors ${
+              onClick={() => switchUsage("residentiel")}
+              disabled={saveMutation.isPending}
+              className={`px-4 py-2 text-sm font-semibold transition-colors disabled:opacity-50 ${
                 usageType === "residentiel"
                   ? "bg-accent text-accent-foreground"
                   : "bg-card text-foreground hover:bg-muted"
@@ -235,8 +237,8 @@ const AdminCategories = () => {
               Résidentiel
             </button>
           </div>
-          <button onClick={() => saveMutation.mutate()} disabled={saveMutation.isPending} className="flex items-center gap-2 rounded-sm bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground hover:bg-accent/90 disabled:opacity-50">
-            <Save className="h-4 w-4" /> Sauvegarder
+          <button onClick={() => saveMutation.mutate(usageType)} disabled={saveMutation.isPending} className="flex items-center gap-2 rounded-sm bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground hover:bg-accent/90 disabled:opacity-50">
+            <Save className="h-4 w-4" /> {isDirty ? "Sauvegarder*" : "Sauvegarder"}
           </button>
         </div>
       </div>
