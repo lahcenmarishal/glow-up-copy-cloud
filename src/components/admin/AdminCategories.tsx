@@ -132,12 +132,14 @@ const AdminCategories = () => {
     });
     updated[catSlug] = list;
     setSubcategories(updated);
+    setIsDirty(true);
   };
 
   const removeSubcategory = (catSlug: string, i: number) => {
     const updated = { ...subcategories };
     updated[catSlug] = (updated[catSlug] || []).filter((_, idx) => idx !== i);
     setSubcategories(updated);
+    setIsDirty(true);
   };
 
   const saveMutation = useMutation({
