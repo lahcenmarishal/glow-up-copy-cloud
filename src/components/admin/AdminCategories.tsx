@@ -4,8 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Plus, Save, Trash2, Eye, EyeOff, Upload, ChevronDown, ChevronUp } from "lucide-react";
 
-type UsageType = "professionnel" | "residentiel";
-
 interface Category {
   id: string;
   slug: string;
@@ -14,7 +12,6 @@ interface Category {
   image_url: string | null;
   sort_order: number;
   is_active: boolean;
-  usage_type: UsageType;
 }
 
 interface Subcategory {
@@ -26,37 +23,27 @@ interface Subcategory {
   category_slug: string;
   sort_order: number;
   is_active: boolean;
-  usage_type: UsageType;
 }
 
 const AdminCategories = () => {
   const qc = useQueryClient();
-  const [usageType, setUsageType] = useState<UsageType>("professionnel");
   const [categories, setCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<Record<string, Subcategory[]>>({});
   const [expandedCat, setExpandedCat] = useState<string | null>(null);
 
   const { data: catData, isLoading } = useQuery({
-    queryKey: ["admin-categories", usageType],
+    queryKey: ["admin-categories"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("equipment_categories")
-        .select("*")
-        .eq("usage_type", usageType)
-        .order("sort_order");
+      const { data, error } = await supabase.from("equipment_categories").select("*").order("sort_order");
       if (error) throw error;
       return data || [];
     },
   });
 
   const { data: subData } = useQuery({
-    queryKey: ["admin-subcategories", usageType],
+    queryKey: ["admin-subcategories"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("equipment_subcategories")
-        .select("*")
-        .eq("usage_type", usageType)
-        .order("sort_order");
+      const { data, error } = await supabase.from("equipment_subcategories").select("*").order("sort_order");
       if (error) throw error;
       return data || [];
     },
@@ -121,7 +108,6 @@ const AdminCategories = () => {
       category_slug: catSlug,
       sort_order: list.length,
       is_active: true,
-      usage_type: usageType,
     });
     updated[catSlug] = list;
     setSubcategories(updated);
@@ -135,7 +121,7 @@ const AdminCategories = () => {
 
   const saveMutation = useMutation({
     mutationFn: async () => {
-      // Update categories (scoped to current usage_type)
+      // Update categories
       for (const cat of categories) {
         await supabase.from("equipment_categories").upsert({
           id: cat.id,
@@ -145,16 +131,12 @@ const AdminCategories = () => {
           image_url: cat.image_url,
           sort_order: cat.sort_order,
           is_active: cat.is_active,
-          usage_type: usageType,
         });
       }
-      // Replace subcategories scoped to (category_slug, usage_type)
+      // Update subcategories per category
       for (const cat of categories) {
-        await supabase
-          .from("equipment_subcategories")
-          .delete()
-          .eq("category_slug", cat.slug)
-          .eq("usage_type", usageType);
+        // Delete existing
+        await supabase.from("equipment_subcategories").delete().eq("category_slug", cat.slug);
         const subs = subcategories[cat.slug] || [];
         if (subs.length > 0) {
           await supabase.from("equipment_subcategories").insert(
@@ -166,7 +148,6 @@ const AdminCategories = () => {
               category_slug: cat.slug,
               sort_order: i,
               is_active: s.is_active,
-              usage_type: usageType,
             }))
           );
         }
@@ -186,40 +167,12 @@ const AdminCategories = () => {
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between gap-4 flex-wrap">
+      <div className="mb-6 flex items-center justify-between">
         <h1 className="text-xl font-bold text-foreground">Catégories & Sous-catégories</h1>
-        <div className="flex items-center gap-3">
-          <div className="inline-flex rounded-sm border border-border overflow-hidden">
-            <button
-              onClick={() => setUsageType("professionnel")}
-              className={`px-4 py-2 text-sm font-semibold transition-colors ${
-                usageType === "professionnel"
-                  ? "bg-accent text-accent-foreground"
-                  : "bg-card text-foreground hover:bg-muted"
-              }`}
-            >
-              Professionnel
-            </button>
-            <button
-              onClick={() => setUsageType("residentiel")}
-              className={`px-4 py-2 text-sm font-semibold transition-colors ${
-                usageType === "residentiel"
-                  ? "bg-accent text-accent-foreground"
-                  : "bg-card text-foreground hover:bg-muted"
-              }`}
-            >
-              Résidentiel
-            </button>
-          </div>
-          <button onClick={() => saveMutation.mutate()} disabled={saveMutation.isPending} className="flex items-center gap-2 rounded-sm bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground hover:bg-accent/90 disabled:opacity-50">
-            <Save className="h-4 w-4" /> Sauvegarder
-          </button>
-        </div>
+        <button onClick={() => saveMutation.mutate()} disabled={saveMutation.isPending} className="flex items-center gap-2 rounded-sm bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground hover:bg-accent/90 disabled:opacity-50">
+          <Save className="h-4 w-4" /> Sauvegarder
+        </button>
       </div>
-
-      <p className="mb-4 text-xs text-muted-foreground">
-        Vous éditez actuellement les catégories <span className="font-semibold text-foreground">{usageType === "professionnel" ? "Professionnel" : "Résidentiel"}</span>. Le contenu et les images sont indépendants entre les deux sections.
-      </p>
 
       <div className="space-y-6">
         {categories.map((cat, ci) => (
