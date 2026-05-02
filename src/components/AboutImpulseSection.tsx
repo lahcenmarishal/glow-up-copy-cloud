@@ -75,6 +75,29 @@ const AboutImpulseSection = () => {
           </motion.div>
         )}
 
+        {chiffresCles && (
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 }} className="mb-16 mt-4">
+            <h3 className="mb-6 font-display text-2xl font-bold text-foreground">{chiffresCles.title}</h3>
+            <ul className="grid max-w-4xl grid-cols-1 gap-3 md:grid-cols-2">
+              {chiffresCles.content.split("\n").map((line: string, i: number) => {
+                const text = line.replace(/^[•\-\s]+/, "").trim();
+                if (!text) return null;
+                const [label, ...rest] = text.split(":");
+                const value = rest.join(":").trim();
+                return (
+                  <li key={i} className="flex items-start gap-3 rounded-sm border border-border bg-background p-4">
+                    <span className="mt-1 inline-block h-2 w-2 flex-shrink-0 rounded-full bg-accent" />
+                    <div className="text-sm leading-relaxed text-muted-foreground">
+                      <span className="font-semibold text-foreground">{label}{value && " :"}</span>
+                      {value && <span> {value}</span>}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </motion.div>
+        )}
+
         {pillars && pillarItems.length > 0 && (
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }} className="mb-16">
             <h3 className="mb-8 font-display text-2xl font-bold text-foreground">{pillars.title}</h3>
