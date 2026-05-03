@@ -46,7 +46,7 @@ const TrendingProducts = () => {
           <button
             onClick={() => scroll("left")}
             aria-label="Précédent"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-background border border-border text-foreground shadow-md hover:bg-secondary transition-colors md:h-10 md:w-10"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-md hover:bg-accent/90 transition-colors md:h-10 md:w-10"
           >
             <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
           </button>
