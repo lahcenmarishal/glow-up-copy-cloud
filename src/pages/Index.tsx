@@ -30,6 +30,7 @@ const Index = () => {
       <HeroCarousel />
       <CategoryCardsSection />
       <TrendingProducts />
+      <HomeBlogSection />
       <AboutImpulseSection />
       <WorldPresenceSection />
       <ContactSection />
