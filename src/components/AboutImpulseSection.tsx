@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
+import { useEffect, useRef } from "react";
 import {
   Shield,
   Lightbulb,
@@ -77,24 +78,19 @@ const AboutImpulseSection = () => {
 
         {chiffresCles && (
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 }} className="mb-16 mt-4">
-            <h3 className="mb-6 font-display text-2xl font-bold text-foreground">{chiffresCles.title}</h3>
-            <ul className="grid max-w-4xl grid-cols-1 gap-3 md:grid-cols-2">
+            <h3 className="mb-8 font-display text-2xl font-bold text-foreground">{chiffresCles.title}</h3>
+            <div className="grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8">
               {chiffresCles.content.split("\n").map((line: string, i: number) => {
-                const text = line.replace(/^[•\-\s]+/, "").trim();
-                if (!text) return null;
-                const [label, ...rest] = text.split(":");
-                const value = rest.join(":").trim();
+                const parts = line.split("|").map((p) => p.trim());
+                if (parts.length < 3) return null;
+                const [prefix, numberStr, suffix] = parts;
+                const target = parseInt(numberStr, 10);
+                if (isNaN(target)) return null;
                 return (
-                  <li key={i} className="flex items-start gap-3 rounded-sm border border-border bg-background p-4">
-                    <span className="mt-1 inline-block h-2 w-2 flex-shrink-0 rounded-full bg-accent" />
-                    <div className="text-sm leading-relaxed text-muted-foreground">
-                      <span className="font-semibold text-foreground">{label}{value && " :"}</span>
-                      {value && <span> {value}</span>}
-                    </div>
-                  </li>
+                  <AnimatedCounter key={i} prefix={prefix} target={target} suffix={suffix} delay={i * 0.4} />
                 );
               })}
-            </ul>
+            </div>
           </motion.div>
         )}
 
