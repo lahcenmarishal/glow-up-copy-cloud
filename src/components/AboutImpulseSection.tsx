@@ -28,6 +28,37 @@ const iconMap: Record<string, any> = {
   PackagePlus
 };
 
+const AnimatedCounter = ({ prefix, target, suffix, delay = 0 }: { prefix: string; target: number; suffix: string; delay?: number }) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-50px" });
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (v) => Math.floor(v).toLocaleString("fr-FR"));
+
+  useEffect(() => {
+    if (!inView) return;
+    const controls = animate(count, target, { duration: 2, delay, ease: "easeOut" });
+    return controls.stop;
+  }, [inView, target, delay, count]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay }}
+      className="flex flex-col items-center text-center"
+    >
+      <div className="flex items-baseline justify-center font-display font-bold leading-none text-accent">
+        <span className="text-3xl md:text-4xl">{prefix}</span>
+        <motion.span ref={ref} className="text-5xl md:text-7xl">{rounded}</motion.span>
+        {suffix.startsWith("%") && <span className="text-3xl md:text-4xl">%</span>}
+      </div>
+      <p className="mt-3 text-sm font-medium uppercase tracking-wide text-muted-foreground md:text-base">
+        {suffix.startsWith("%") ? suffix.slice(1).trim() : suffix}
+      </p>
+    </motion.div>
+  );
+};
+
 const AboutImpulseSection = () => {
   const { data: sections, isLoading } = useQuery({
     queryKey: ["about-sections"],
