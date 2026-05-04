@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
+import { useEffect, useRef } from "react";
 import {
   Shield,
   Lightbulb,
@@ -25,6 +26,37 @@ const iconMap: Record<string, any> = {
   Star,
   Users,
   PackagePlus
+};
+
+const AnimatedCounter = ({ prefix, target, suffix, delay = 0 }: { prefix: string; target: number; suffix: string; delay?: number }) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-50px" });
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (v) => Math.floor(v).toLocaleString("fr-FR"));
+
+  useEffect(() => {
+    if (!inView) return;
+    const controls = animate(count, target, { duration: 2, delay, ease: "easeOut" });
+    return controls.stop;
+  }, [inView, target, delay, count]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay }}
+      className="flex flex-col items-center text-center"
+    >
+      <div className="flex items-baseline justify-center font-display font-bold leading-none text-accent">
+        <span className="text-3xl md:text-4xl">{prefix}</span>
+        <motion.span ref={ref} className="text-5xl md:text-7xl">{rounded}</motion.span>
+        {suffix.startsWith("%") && <span className="text-3xl md:text-4xl">%</span>}
+      </div>
+      <p className="mt-3 text-sm font-medium uppercase tracking-wide text-muted-foreground md:text-base">
+        {suffix.startsWith("%") ? suffix.slice(1).trim() : suffix}
+      </p>
+    </motion.div>
+  );
 };
 
 const AboutImpulseSection = () => {
@@ -77,24 +109,19 @@ const AboutImpulseSection = () => {
 
         {chiffresCles && (
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 }} className="mb-16 mt-4">
-            <h3 className="mb-6 font-display text-2xl font-bold text-foreground">{chiffresCles.title}</h3>
-            <ul className="grid max-w-4xl grid-cols-1 gap-3 md:grid-cols-2">
+            <h3 className="mb-8 font-display text-2xl font-bold text-foreground">{chiffresCles.title}</h3>
+            <div className="grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8">
               {chiffresCles.content.split("\n").map((line: string, i: number) => {
-                const text = line.replace(/^[•\-\s]+/, "").trim();
-                if (!text) return null;
-                const [label, ...rest] = text.split(":");
-                const value = rest.join(":").trim();
+                const parts = line.split("|").map((p) => p.trim());
+                if (parts.length < 3) return null;
+                const [prefix, numberStr, suffix] = parts;
+                const target = parseInt(numberStr, 10);
+                if (isNaN(target)) return null;
                 return (
-                  <li key={i} className="flex items-start gap-3 rounded-sm border border-border bg-background p-4">
-                    <span className="mt-1 inline-block h-2 w-2 flex-shrink-0 rounded-full bg-accent" />
-                    <div className="text-sm leading-relaxed text-muted-foreground">
-                      <span className="font-semibold text-foreground">{label}{value && " :"}</span>
-                      {value && <span> {value}</span>}
-                    </div>
-                  </li>
+                  <AnimatedCounter key={i} prefix={prefix} target={target} suffix={suffix} delay={i * 0.4} />
                 );
               })}
-            </ul>
+            </div>
           </motion.div>
         )}
 
