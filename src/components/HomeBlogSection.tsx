@@ -24,19 +24,13 @@ const HomeBlogSection = () => {
   return (
     <section className="bg-secondary/30 py-12 md:py-20">
       <div className="container mx-auto px-4 md:px-16">
-        <div className="mb-8 flex flex-col gap-3 md:mb-10 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-accent">Blog</p>
-            <h2 className="font-display text-xl font-bold uppercase text-foreground md:text-3xl">
-              Actualités & Insights
-            </h2>
-            <p className="mt-1 text-xs text-muted-foreground md:text-sm">
-              Plongez dans l'univers Impulse : innovation, marché et expertise.
-            </p>
-          </div>
+        <div className="mb-8 flex items-end justify-between md:mb-10">
+          <h2 className="font-display text-xl font-bold uppercase text-foreground md:text-3xl">
+            Blog
+          </h2>
           <Link
             to="/blog"
-            className="inline-flex items-center gap-1.5 self-start text-xs font-semibold text-accent hover:underline md:text-sm"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent hover:underline md:text-sm"
           >
             Tous les articles <ArrowRight className="h-3.5 w-3.5" />
           </Link>
@@ -81,12 +75,14 @@ const HomeBlogSection = () => {
                     {p.excerpt}
                   </p>
                 )}
-                <Link
-                  to={`/blog/${p.slug}`}
-                  className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-accent hover:underline"
-                >
-                  Lire l'article <ArrowRight className="h-3 w-3" />
-                </Link>
+                <div className="mt-auto pt-4">
+                  <Link
+                    to={`/blog/${p.slug}`}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-accent-foreground transition-colors hover:bg-accent/90 md:text-sm"
+                  >
+                    Lire l'article <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
               </div>
             </motion.article>
           ))}
