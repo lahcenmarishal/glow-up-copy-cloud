@@ -1,6 +1,6 @@
 import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
-import { LogOut, Package, MessageSquare, Settings, ArrowLeft, Image, Briefcase, FolderOpen, LayoutGrid, Info, Layers, Mail, HelpCircle, FileText } from "lucide-react";
+import { LogOut, Package, MessageSquare, Settings, ArrowLeft, Image, Briefcase, FolderOpen, LayoutGrid, Info, Layers, Mail, HelpCircle, FileText, Eye } from "lucide-react";
 import AdminProducts from "@/components/admin/AdminProducts";
 import AdminContacts from "@/components/admin/AdminContacts";
 import AdminContactSettings from "@/components/admin/AdminContactSettings";
@@ -13,9 +13,11 @@ import AdminCategories from "@/components/admin/AdminCategories";
 import AdminBlogs from "@/components/admin/AdminBlogs";
 import AdminFaqs from "@/components/admin/AdminFaqs";
 import AdminNewsletter from "@/components/admin/AdminNewsletter";
+import AdminHomeSections from "@/components/admin/AdminHomeSections";
 import logo from "@/assets/logo-new.png";
 
 const tabs = [
+  { id: "home-sections", label: "Sections accueil", icon: Eye },
   { id: "products", label: "Produits", icon: Package },
   { id: "hero", label: "Carousel", icon: Image },
   { id: "categories", label: "Cartes Accueil", icon: LayoutGrid },
@@ -68,6 +70,7 @@ const AdminPage = () => {
         </div>
       </aside>
       <main className="ml-56 flex-1 p-8">
+        {activeTab === "home-sections" && <AdminHomeSections />}
         {activeTab === "products" && <AdminProducts />}
         {activeTab === "hero" && <AdminHeroSlides />}
         {activeTab === "categories" && <AdminCategoryCards />}

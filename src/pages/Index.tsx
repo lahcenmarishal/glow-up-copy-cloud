@@ -10,9 +10,11 @@ import WorldPresenceSection from "@/components/WorldPresenceSection";
 import ContactSection from "@/components/ContactSection";
 import FaqSection from "@/components/FaqSection";
 import Footer from "@/components/Footer";
+import { useHomeSections } from "@/hooks/useHomeSections";
 
 const Index = () => {
   const location = useLocation();
+  const { isVisible } = useHomeSections();
 
   useEffect(() => {
     if (location.hash) {
@@ -27,14 +29,14 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
-      <HeroCarousel />
-      <CategoryCardsSection />
-      <TrendingProducts />
-      <HomeBlogSection />
-      <AboutImpulseSection />
-      <WorldPresenceSection />
-      <ContactSection />
-      <FaqSection />
+      {isVisible("hero") && <HeroCarousel />}
+      {isVisible("categories") && <CategoryCardsSection />}
+      {isVisible("trending") && <TrendingProducts />}
+      {isVisible("blog") && <HomeBlogSection />}
+      {isVisible("about") && <AboutImpulseSection />}
+      {isVisible("world") && <WorldPresenceSection />}
+      {isVisible("contact") && <ContactSection />}
+      {isVisible("faq") && <FaqSection />}
       <Footer />
     </div>
   );
