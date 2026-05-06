@@ -75,9 +75,6 @@ const WorldPresenceSection = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-background uppercase tracking-wide">
             Une présence mondiale
           </h2>
-          <p className="text-background/70 mt-3 max-w-2xl mx-auto">
-            Dans plus de 100 pays dans le monde
-          </p>
         </div>
 
         <div
