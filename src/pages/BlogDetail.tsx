@@ -73,6 +73,11 @@ const BlogDetailPage = () => {
               </div>
               {post.excerpt && <p className="mt-6 text-lg leading-relaxed text-muted-foreground">{post.excerpt}</p>}
               <div className="mt-8 text-base">{renderMarkdown(post.content || "")}</div>
+              <div className="mt-12 flex justify-center border-t border-border pt-10">
+                <Link to="/contact" className="inline-flex items-center gap-2 rounded-sm bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90">
+                  Contactez-nous pour une consultation personnalisée
+                </Link>
+              </div>
             </div>
           </article>
         )}
