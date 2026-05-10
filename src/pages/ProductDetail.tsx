@@ -20,7 +20,7 @@ const ProductDetailPage = () => {
 
   const { data: product, isLoading } = useQuery({ queryKey: ["product", id], queryFn: async () => { const { data, error } = await supabase.from("products").select("*").eq("id", id!).eq("is_published", true).maybeSingle(); if (error) throw error; return data; }, enabled: !!id });
   const { data: galleryImages } = useQuery({ queryKey: ["product-images", id], queryFn: async () => { const { data, error } = await supabase.from("product_images").select("*").eq("product_id", id!).order("sort_order"); if (error) throw error; return data; }, enabled: !!id });
-  const { data: relatedProducts } = useQuery({ queryKey: ["related-products", product?.range_code, product?.subcategory, product?.category, id], queryFn: async () => { let query = supabase.from("products").select("*").eq("is_published", true).neq("id", id!); const isMusculation = (product!.category || "").toLowerCase() === "musculation"; if (isMusculation && product!.range_code) { query = query.eq("range_code", product!.range_code); } else if (product!.subcategory) { query = query.eq("subcategory", product!.subcategory); } else { query = query.eq("category", product!.category); } const { data, error } = await query.order("sort_order").limit(4); if (error) throw error; return data; }, enabled: !!(product?.category || product?.subcategory || product?.range_code) && !!id });
+  const { data: relatedProducts } = useQuery({ queryKey: ["related-products", product?.range_code, product?.subcategory, product?.category, id], queryFn: async () => { let query = supabase.from("products").select("*").eq("is_published", true).neq("id", id!); if (product!.range_code) { query = query.eq("range_code", product!.range_code); } else if (product!.subcategory) { query = query.eq("subcategory", product!.subcategory); } else { query = query.eq("category", product!.category); } const { data, error } = await query.order("sort_order").limit(4); if (error) throw error; return data; }, enabled: !!(product?.category || product?.subcategory || product?.range_code) && !!id });
 
   const allImages = product ? [...(product.image_url ? [{ url: product.image_url, alt: product.name }] : []), ...(product.hover_image_url ? [{ url: product.hover_image_url, alt: `${product.name} - vue alternative` }] : []), ...(galleryImages?.map((img) => ({ url: img.image_url, alt: img.alt_text || product.name })) || [])] : [];
   const specs = (product?.specs as { label: string; value: string }[] | null) || [];
@@ -62,19 +62,21 @@ const ProductDetailPage = () => {
         </button>
         <a href="/contact" className="inline-flex items-center gap-2 rounded-sm border border-border px-4 py-2.5 text-xs font-semibold text-foreground transition-colors hover:bg-secondary md:px-6 md:py-3 md:text-sm">Nous contacter</a>
       </div>
-      <div className="mt-6 border-t border-border pt-4">
-        <div className="flex gap-4 border-b border-border">{tabs.map(t => <button key={t.id} onClick={() => setActiveTab(t.id)} className={`pb-2 text-xs font-semibold transition-colors ${activeTab === t.id ? "border-b-2 border-accent text-accent" : "text-muted-foreground hover:text-foreground"}`}>{t.label}</button>)}</div>
-        <div className="mt-4">{activeTab === "overview" && <div className="text-sm leading-relaxed text-foreground/80 whitespace-pre-line">{product.description || "Pas de description disponible."}{features.length > 0 && <ul className="mt-4 space-y-1">{features.map((f, i) => <li key={i} className="flex items-start gap-2"><span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent" />{f}</li>)}</ul>}</div>}
-        {activeTab === "specs" && (specs.length > 0 ? <div className="space-y-2">{specs.map((s, i) => <div key={i} className="flex justify-between border-b border-border py-2 text-sm"><span className="text-muted-foreground">{s.label}</span><span className="font-medium text-foreground">{s.value}</span></div>)}</div> : <p className="text-sm text-muted-foreground">Aucune caractéristique disponible.</p>)}
-        {activeTab === "warranty" && (warrantyItems.length > 0 ? <div className="space-y-2">{warrantyItems.map((w, i) => <div key={i} className="flex justify-between border-b border-border py-2 text-sm"><span className="text-muted-foreground">{w.component}</span><span className="font-medium text-foreground">{w.duration}</span></div>)}</div> : <p className="text-sm text-muted-foreground">Informations de garantie non disponibles.</p>)}</div>
-      </div>
     </div>
-    </div></section>
+    </div>
+
+    <div className="mt-10 border-t border-border pt-6">
+      <div className="flex gap-6 border-b border-border">{tabs.map(t => <button key={t.id} onClick={() => setActiveTab(t.id)} className={`pb-3 text-sm font-semibold transition-colors ${activeTab === t.id ? "border-b-2 border-accent text-accent" : "text-muted-foreground hover:text-foreground"}`}>{t.label}</button>)}</div>
+      <div className="mt-6">{activeTab === "overview" && <div className="text-sm leading-relaxed text-foreground/80 whitespace-pre-line md:text-base">{product.description || "Pas de description disponible."}{features.length > 0 && <ul className="mt-4 space-y-1">{features.map((f, i) => <li key={i} className="flex items-start gap-2"><span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent" />{f}</li>)}</ul>}</div>}
+      {activeTab === "specs" && (specs.length > 0 ? <div className="space-y-2">{specs.map((s, i) => <div key={i} className="flex justify-between border-b border-border py-2 text-sm"><span className="text-muted-foreground">{s.label}</span><span className="font-medium text-foreground">{s.value}</span></div>)}</div> : <p className="text-sm text-muted-foreground">Aucune caractéristique disponible.</p>)}
+      {activeTab === "warranty" && (warrantyItems.length > 0 ? <div className="space-y-2">{warrantyItems.map((w, i) => <div key={i} className="flex justify-between border-b border-border py-2 text-sm"><span className="text-muted-foreground">{w.component}</span><span className="font-medium text-foreground">{w.duration}</span></div>)}</div> : <p className="text-sm text-muted-foreground">Informations de garantie non disponibles.</p>)}</div>
+    </div>
+    </section>
 
     {relatedProducts && relatedProducts.length > 0 && (
       <section className="container mx-auto px-4 py-16 md:px-16"><h2 className="mb-6 font-display text-xl font-bold text-foreground">Produits similaires</h2>
       <div className="grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-3">{relatedProducts.map(p => (<a key={p.id} href={`/produit/${p.id}`} className="group overflow-hidden rounded-sm border border-border bg-card"><div className="aspect-square overflow-hidden"><img src={p.image_url || ""} alt={p.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" /></div><div className="p-2 md:p-3"><p className="text-[9px] font-semibold uppercase text-accent">{p.category}</p><h3 className="mt-0.5 text-xs font-semibold text-foreground line-clamp-2 md:text-sm">{p.name}</h3></div></a>))}</div>
-      <div className="mt-10 flex justify-center"><a href="/contact" className="inline-flex items-center justify-center rounded-sm bg-accent px-8 py-4 font-display text-sm font-semibold uppercase tracking-wider text-accent-foreground transition-colors hover:bg-accent/90">Contactez-nous pour une consultation personnalisée</a></div>
+      <div className="mt-10 flex justify-center"><a href="/contact" className="inline-flex items-center justify-center rounded-sm bg-accent px-8 py-4 text-sm font-semibold normal-case text-accent-foreground transition-colors hover:bg-accent/90">contactez-nous pour une consultation personnalisée</a></div>
       </section>
     )}
 
