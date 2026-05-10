@@ -76,9 +76,12 @@ const ProductDetailPage = () => {
     {relatedProducts && relatedProducts.length > 0 && (
       <section className="container mx-auto px-4 py-16 md:px-16"><h2 className="mb-6 font-display text-xl font-bold text-foreground">Produits similaires</h2>
       <div className="grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-3">{relatedProducts.map(p => (<a key={p.id} href={`/produit/${p.id}`} className="group overflow-hidden rounded-sm border border-border bg-card"><div className="aspect-square overflow-hidden"><img src={p.image_url || ""} alt={p.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" /></div><div className="p-2 md:p-3"><p className="text-[9px] font-semibold uppercase text-accent">{p.category}</p><h3 className="mt-0.5 text-xs font-semibold text-foreground line-clamp-2 md:text-sm">{p.name}</h3></div></a>))}</div>
-      <div className="mt-10 flex justify-center"><a href="/contact" className="inline-flex items-center justify-center rounded-sm bg-accent px-8 py-4 text-sm font-semibold normal-case text-accent-foreground transition-colors hover:bg-accent/90">contactez-nous pour une consultation personnalisée</a></div>
       </section>
     )}
+
+    <section className="container mx-auto px-4 pb-16 md:px-16">
+      <div className="flex justify-center"><a href="/contact" className="inline-flex items-center justify-center rounded-sm bg-accent px-8 py-4 text-sm font-semibold normal-case text-accent-foreground transition-colors hover:bg-accent/90">Contactez-nous pour une consultation personnalisée</a></div>
+    </section>
 
     {lightboxOpen && <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/90 backdrop-blur-sm" onClick={() => setLightboxOpen(false)}><button className="absolute right-4 top-4 text-background"><X className="h-6 w-6" /></button>{allImages.length > 0 && <img src={allImages[activeImage].url} alt="" className="max-h-[90vh] max-w-[90vw] object-contain" onClick={e => e.stopPropagation()} />}{allImages.length > 1 && <><button onClick={(e) => { e.stopPropagation(); prevImage(); }} className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-background/20 p-2"><ChevronLeft className="h-6 w-6 text-background" /></button><button onClick={(e) => { e.stopPropagation(); nextImage(); }} className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-background/20 p-2"><ChevronRight className="h-6 w-6 text-background" /></button></>}</div>}
     </div><Footer /></div>
