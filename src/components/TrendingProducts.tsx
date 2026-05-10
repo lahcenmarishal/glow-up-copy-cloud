@@ -37,7 +37,7 @@ const TrendingProducts = () => {
             Produits Tendances
           </h2>
           <p className="mt-1 text-xs text-muted-foreground md:mt-2 md:text-sm">
-            Découvrez les dernières et meilleures nouveautés de la marque Impulse Fitness.
+            Découvrez les dernières innovations de la marque Impulse Fitness
           </p>
         </div>
 

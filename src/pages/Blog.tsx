@@ -36,21 +36,21 @@ const BlogPage = () => {
           ) : !posts || posts.length === 0 ? (
             <p className="py-20 text-center text-muted-foreground">Aucun article pour le moment.</p>
           ) : (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3 lg:gap-12">
               {posts.map((p: any, i: number) => (
                 <motion.article key={p.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.08 }}>
                   <Link to={`/blog/${p.slug}`} className="group block">
-                    <div className="aspect-[16/10] overflow-hidden rounded-sm bg-secondary">
+                    <div className="aspect-[4/3] overflow-hidden rounded-sm bg-secondary">
                       {p.cover_image_url && <img src={p.cover_image_url} alt={p.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />}
                     </div>
-                    <div className="mt-4">
+                    <div className="mt-6">
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
                         <Calendar className="h-3 w-3" />
                         <time>{new Date(p.published_at || p.created_at).toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" })}</time>
                       </div>
-                      <h2 className="mt-2 font-display text-lg font-bold text-foreground transition-colors group-hover:text-accent md:text-xl">{p.title}</h2>
-                      <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{p.excerpt}</p>
-                      <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-accent">Lire l'article <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" /></span>
+                      <h2 className="mt-3 font-display text-2xl font-bold text-foreground transition-colors group-hover:text-accent md:text-3xl">{p.title}</h2>
+                      <p className="mt-3 line-clamp-4 text-base leading-relaxed text-muted-foreground">{p.excerpt}</p>
+                      <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent normal-case">lire l'article <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" /></span>
                     </div>
                   </Link>
                 </motion.article>

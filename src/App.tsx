@@ -23,6 +23,7 @@ import AProposPage from "./pages/APropos";
 import BlogPage from "./pages/Blog";
 import BlogDetailPage from "./pages/BlogDetail";
 import PolitiqueConfidentialitePage from "./pages/PolitiqueConfidentialite";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
           <QuoteCartSheet />
           <WhatsAppButton />
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/professionnel" element={<ProfessionnelPage />} />

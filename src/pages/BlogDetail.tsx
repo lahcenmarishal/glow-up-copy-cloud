@@ -59,9 +59,9 @@ const BlogDetailPage = () => {
         ) : (
           <article>
             {post.cover_image_url && (
-              <div className="relative h-[40vh] min-h-[300px] overflow-hidden">
-                <img src={post.cover_image_url} alt={post.title} className="h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+              <div className="relative w-full overflow-hidden">
+                <img src={post.cover_image_url} alt={post.title} className="block h-auto w-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent" />
               </div>
             )}
             <div className="container mx-auto max-w-3xl px-6 py-12 md:py-16">
@@ -74,8 +74,8 @@ const BlogDetailPage = () => {
               {post.excerpt && <p className="mt-6 text-lg leading-relaxed text-muted-foreground">{post.excerpt}</p>}
               <div className="mt-8 text-base">{renderMarkdown(post.content || "")}</div>
               <div className="mt-12 flex justify-center border-t border-border pt-10">
-                <Link to="/contact" className="inline-flex items-center gap-2 rounded-sm bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90">
-                  Contactez-nous pour une consultation personnalisée
+                <Link to="/contact" className="inline-flex items-center gap-2 rounded-sm bg-accent px-6 py-3 text-sm font-semibold normal-case text-accent-foreground transition-colors hover:bg-accent/90">
+                  contactez-nous pour une consultation personnalisée
                 </Link>
               </div>
             </div>
