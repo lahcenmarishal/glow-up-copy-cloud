@@ -3,9 +3,9 @@ import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from "re
 import { Plus, Minus, Home, Maximize2 } from "lucide-react";
 import impulseLogo from "@/assets/impulse-logo.png";
 
-// 50m dataset offers more detailed borders (e.g. Morocco/Western Sahara rendered together as a single visible landmass)
+// 110m dataset renders Morocco and Western Sahara as a single landmass without an internal disputed border line
 const GEO_URL =
-  "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json";
+  "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
 const countries: { name: string; coords: [number, number] }[] = [
   { name: "France", coords: [2.5, 46.6] },
