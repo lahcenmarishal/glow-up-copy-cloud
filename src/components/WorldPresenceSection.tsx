@@ -1,9 +1,9 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from "react-simple-maps";
 import { Plus, Minus, Home, Maximize2 } from "lucide-react";
+import { feature, merge } from "topojson-client";
 import impulseLogo from "@/assets/impulse-logo.png";
 
-// 110m dataset renders Morocco and Western Sahara as a single landmass without an internal disputed border line
 const GEO_URL =
   "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
