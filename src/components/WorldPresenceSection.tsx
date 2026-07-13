@@ -139,7 +139,7 @@ const WorldPresenceSection = () => {
                 return true;
               }}
             >
-              <Geographies geography={GEO_URL}>
+              <Geographies geography={geoData ?? GEO_URL}>
                 {({ geographies }) =>
                   geographies
                     // Hide Antarctica
