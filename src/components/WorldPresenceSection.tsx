@@ -1,9 +1,9 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from "react-simple-maps";
 import { Plus, Minus, Home, Maximize2 } from "lucide-react";
+import { feature, merge } from "topojson-client";
 import impulseLogo from "@/assets/impulse-logo.png";
 
-// 110m dataset renders Morocco and Western Sahara as a single landmass without an internal disputed border line
 const GEO_URL =
   "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
@@ -41,7 +41,40 @@ const WorldPresenceSection = () => {
     zoom: 1,
   });
   const [activeMarker, setActiveMarker] = useState<string | null>(null);
+  const [geoData, setGeoData] = useState<any>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetch(GEO_URL)
+      .then((r) => r.json())
+      .then((topology: any) => {
+        const countriesObj = topology.objects.countries;
+        const geoms = countriesObj.geometries;
+        // Morocco = 504, Western Sahara = 732 (UN M49 codes used by world-atlas)
+        const moroccoGeoms = geoms.filter(
+          (g: any) => g.id === "504" || g.id === "732"
+        );
+        const others = geoms.filter(
+          (g: any) => g.id !== "504" && g.id !== "732"
+        );
+        // Merge Morocco + Western Sahara into a single polygon (no internal border)
+        const mergedMorocco = merge(topology, moroccoGeoms);
+        const otherFeatures = feature(topology, {
+          type: "GeometryCollection",
+          geometries: others,
+        } as any) as any;
+        const features = [
+          ...otherFeatures.features,
+          {
+            type: "Feature",
+            properties: { name: "Maroc" },
+            geometry: mergedMorocco,
+          },
+        ];
+        setGeoData({ type: "FeatureCollection", features });
+      })
+      .catch(() => setGeoData(GEO_URL));
+  }, []);
 
   const handleZoomIn = () => {
     if (position.zoom >= 8) return;
@@ -106,7 +139,7 @@ const WorldPresenceSection = () => {
                 return true;
               }}
             >
-              <Geographies geography={GEO_URL}>
+              <Geographies geography={geoData ?? GEO_URL}>
                 {({ geographies }) =>
                   geographies
                     // Hide Antarctica
