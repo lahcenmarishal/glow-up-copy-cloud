@@ -53,7 +53,7 @@ const TrendingProducts = () => {
 
           <div
             ref={scrollRef}
-            className="flex gap-3 overflow-x-auto pb-4 md:gap-5"
+            className="flex gap-3 overflow-x-auto overflow-y-hidden pb-4 md:gap-5 snap-x snap-mandatory scroll-smooth"
             style={{ scrollbarWidth: "none" }}
           >
             {products.map((p, i) => (
@@ -63,7 +63,7 @@ const TrendingProducts = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="min-w-[180px] max-w-[220px] flex-shrink-0 md:min-w-[260px] md:max-w-[300px]"
+                className="snap-start flex-shrink-0 w-[calc((100%-0.75rem)/2)] sm:w-[calc((100%-1.5rem)/3)] md:w-[calc((100%-3rem)/4)] lg:w-[calc((100%-5rem)/5)]"
               >
                 <a href={`/produit/${p.id}`} className="group block">
                   <div className="aspect-square overflow-hidden rounded-sm bg-secondary/50">
